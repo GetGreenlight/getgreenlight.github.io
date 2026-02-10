@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - Greenlight</title>
+  <link rel="icon" type="image/png" href="greenlight-logo-1024.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav>
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="greenlight-logo-1024.png" alt="Greenlight logo">
+        Greenlight
+      </a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="legal">
+    <div class="container">
+      <h1>Privacy Policy</h1>
+      <p class="last-updated">Last updated: February 10, 2025</p>
+
+      <p>Greenlight ("we", "our", "the Service") is operated by David Farrell. This policy describes what data we collect, how we use it, and your rights regarding that data.</p>
+
+      <h2>1. Data We Collect</h2>
+      <p>Greenlight collects the minimum data necessary to deliver permission request notifications to your device:</p>
+      <ul>
+        <li><strong>Device identifier:</strong> A randomly generated UUID created on your device and stored in your iCloud Keychain. This identifier is used to route permission requests to your device. It is not linked to your Apple ID, name, or any other personal information.</li>
+        <li><strong>Device secret:</strong> A cryptographic secret generated on your device and stored in your iCloud Keychain. This is used to authenticate communication between the app and the relay server.</li>
+        <li><strong>APNs token:</strong> A token provided by Apple Push Notification service, used solely to deliver push notifications when the app is not in the foreground. This token is device-specific and does not identify you personally.</li>
+        <li><strong>Permission request data:</strong> When your AI coding agent sends a permission request, the request content (tool name, command, file path, etc.) is relayed through our server to your device. Request metadata — including the tool name, tool input, your decision, and a timestamp — is logged and archived for operational and dispute resolution purposes. These logs allow us to investigate issues and verify what actions were requested and how they were resolved.</li>
+        <li><strong>Always-allow rules:</strong> If you choose "Always Allow" for a request, a pattern-based rule is stored on the server associated with your device identifier. You can view and delete these rules at any time in the app.</li>
+      </ul>
+
+      <h2>2. Data We Do Not Collect</h2>
+      <ul>
+        <li>We do not collect your name, email address, or Apple ID.</li>
+        <li>We do not collect your IP address for tracking purposes.</li>
+        <li>We do not collect analytics, usage metrics, or telemetry.</li>
+        <li>We do not use cookies or third-party tracking.</li>
+        <li>We do not access your source code, files, or any data on your computer beyond what is included in the permission request payload sent by the hook script.</li>
+      </ul>
+
+      <h2>3. How We Use Your Data</h2>
+      <p>All data collected is used exclusively to provide the core functionality of the Service:</p>
+      <ul>
+        <li>Routing permission requests from your AI coding agent to your device.</li>
+        <li>Sending push notifications to wake the app when a request arrives.</li>
+        <li>Evaluating always-allow rules to auto-approve matching requests.</li>
+      </ul>
+      <p>We do not sell, share, or transfer your data to any third party, except Apple Push Notification service (APNs) for the sole purpose of delivering notifications.</p>
+
+      <h2>4. Data Storage and Security</h2>
+      <ul>
+        <li>Your device identifier and secret are stored in your iCloud Keychain, which is end-to-end encrypted by Apple.</li>
+        <li>The relay server stores your device identifier (hashed secret) and APNs token in a database to route requests and send notifications.</li>
+        <li>Always-allow rules are stored server-side and associated with your device identifier.</li>
+        <li>All communication between the app and the server uses TLS encryption (HTTPS/WSS).</li>
+        <li>Permission request content is transient and is not logged or stored beyond the lifetime of the request.</li>
+      </ul>
+
+      <h2>5. Data Retention</h2>
+      <p>Device registrations and always-allow rules are retained as long as you use the Service. Permission request logs are retained indefinitely for operational and dispute resolution purposes. If you uninstall the app, your device registration will become orphaned (no further requests can be delivered). You may contact us to request deletion of your server-side data at any time.</p>
+
+      <h2>6. Children's Privacy</h2>
+      <p>Greenlight is not directed at children under 13 and we do not knowingly collect data from children.</p>
+
+      <h2>7. Changes to This Policy</h2>
+      <p>We may update this policy from time to time. Changes will be posted on this page with an updated "Last updated" date. Continued use of the Service after changes constitutes acceptance of the revised policy.</p>
+
+      <h2>8. Contact</h2>
+      <p>If you have questions about this privacy policy or your data, contact us at <a href="mailto:greenlight@dnmfarrell.com">greenlight@dnmfarrell.com</a>.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="mailto:greenlight@dnmfarrell.com">Contact</a>
+      </div>
+      <p class="copyright">&copy; 2025 David Farrell. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>
