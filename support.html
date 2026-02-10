@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support & Setup - Greenlight</title>
+  <meta name="description" content="Get started with Greenlight. Installation instructions, setup guide, and support for remote AI agent approval.">
+  <link rel="icon" type="image/png" href="greenlight-logo-1024.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav>
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="greenlight-logo-1024.png" alt="Greenlight logo">
+        Greenlight
+      </a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="docs">
+    <div class="container">
+      <h1>Support & Setup Guide</h1>
+
+      <h2>Getting Started</h2>
+
+      <h3>1. Install the App</h3>
+      <p>Download Greenlight from the App Store and open it. The app will automatically generate a unique device ID and connect to the relay server.</p>
+
+      <h3>2. Copy Your Device ID</h3>
+      <p>Go to the <strong>About</strong> tab in the app and tap your Device ID to copy it to the clipboard. You'll need this for the next step.</p>
+
+      <h3>3. Install the Hook Script</h3>
+      <p>Download the hook script and place it somewhere on your machine:</p>
+      <pre><code>curl -o ~/greenlight-hook.sh https://getgreenlight.github.io/greenlight-hook.sh
+chmod +x ~/greenlight-hook.sh</code></pre>
+
+      <h3>4. Configure Claude Code</h3>
+      <p>Add a hook to your Claude Code <strong>per-project</strong> settings file (<code>.claude/settings.local.json</code> in your project root):</p>
+      <pre><code>{
+  "hooks": {
+    "PermissionRequest": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/greenlight-hook.sh --device-id YOUR_DEVICE_ID --project myproject"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+      <p>Replace <code>YOUR_DEVICE_ID</code> with the device ID from the app, and <code>myproject</code> with your project's name. The <code>--project</code> flag adds a project badge in the app so you know which project a request is coming from.</p>
+      <p><strong>Important:</strong> Do not add the hook to your global configuration (<code>~/.claude/settings.json</code>). Claude Code merges global and project settings, so having the hook in both places will send two requests for every action.</p>
+
+      <h3>5. Test It</h3>
+      <p>Run Claude Code and ask it to do something that requires permission:</p>
+      <pre><code>claude "list files in /etc"</code></pre>
+      <p>You should see a request appear in the app!</p>
+
+      <h2>Hook Script Options</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Option</th>
+            <th>Description</th>
+            <th>Default</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>--device-id ID</code></td>
+            <td>Your device ID from the app</td>
+            <td>Required</td>
+          </tr>
+          <tr>
+            <td><code>--project NAME</code></td>
+            <td>Project name shown in the app</td>
+            <td>(none)</td>
+          </tr>
+          <tr>
+            <td><code>--timeout SECONDS</code></td>
+            <td>Request timeout</td>
+            <td>60</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Using the App</h2>
+
+      <h3>Permission Decisions</h3>
+      <p>Each request can be responded to with four actions:</p>
+      <ul>
+        <li><strong>Always Allow</strong> — Approves and creates a rule so future matching requests are auto-approved.</li>
+        <li><strong>Allow</strong> — Approves this one request.</li>
+        <li><strong>Deny</strong> — Denies this one request.</li>
+        <li><strong>Deny & Stop</strong> — Denies and sends a halt signal to stop the agent entirely.</li>
+      </ul>
+
+      <h3>Managing Rules</h3>
+      <p>The <strong>Grants</strong> tab shows all your "Always Allow" rules grouped by project. Swipe left on any rule to delete it. Rules use pattern matching:</p>
+      <ul>
+        <li>Regular commands get wildcard patterns (e.g., <code>Bash(go build **)</code>)</li>
+        <li>Destructive commands like <code>rm</code> use exact matching for safety</li>
+        <li>File tools match on the directory (e.g., <code>Read(/home/user/src/**)</code>)</li>
+      </ul>
+
+      <h3>Notifications</h3>
+      <p>Greenlight uses Time Sensitive notifications that can break through Focus modes. Make sure notifications are enabled in <strong>Settings &rarr; Greenlight &rarr; Notifications</strong> and that Time Sensitive notifications are allowed in your Focus mode settings.</p>
+
+      <h2>Troubleshooting</h2>
+
+      <h3>Not receiving requests</h3>
+      <ul>
+        <li>Check the <strong>About</strong> tab — the status should show "Connected" with a green dot.</li>
+        <li>Verify your device ID in the hook config matches the one shown in the app.</li>
+        <li>Make sure the hook script is executable (<code>chmod +x</code>).</li>
+      </ul>
+
+      <h3>Not receiving push notifications</h3>
+      <ul>
+        <li>Check that notifications are enabled: <strong>Settings &rarr; Greenlight &rarr; Notifications</strong>.</li>
+        <li>If using a Focus mode, make sure Greenlight is in the allowed apps list or Time Sensitive notifications are enabled.</li>
+        <li>Push notifications are sent when the app is backgrounded. If the app is in the foreground, requests arrive directly via WebSocket.</li>
+      </ul>
+
+      <h3>Requests timing out</h3>
+      <ul>
+        <li>The default timeout is 60 seconds. If you need more time, increase it with <code>--timeout 300</code> in the hook config.</li>
+        <li>If the app is not connected and push notifications fail, the request will time out and be denied.</li>
+      </ul>
+
+      <h2>Contact</h2>
+      <p>For bug reports, feature requests, or any questions, email <a href="mailto:greenlight@dnmfarrell.com">greenlight@dnmfarrell.com</a>.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="support.html">Support</a>
+        <a href="mailto:greenlight@dnmfarrell.com">Contact</a>
+      </div>
+      <p class="copyright">&copy; 2025 David Farrell. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

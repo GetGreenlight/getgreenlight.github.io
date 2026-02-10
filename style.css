@@ -278,6 +278,102 @@ footer .copyright {
   margin-bottom: 8px;
 }
 
+/* Support / docs page */
+.docs {
+  padding: 60px 0;
+}
+
+.docs h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin-bottom: 32px;
+}
+
+.docs h2 {
+  font-size: 1.3rem;
+  text-align: left;
+  margin-top: 36px;
+  margin-bottom: 12px;
+}
+
+.docs h3 {
+  font-size: 1.1rem;
+  color: var(--text-heading);
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+.docs p,
+.docs ul,
+.docs ol {
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.docs ul,
+.docs ol {
+  padding-left: 24px;
+}
+
+.docs li {
+  margin-bottom: 8px;
+}
+
+.docs code {
+  font-family: "SF Mono", "Menlo", "Monaco", monospace;
+  font-size: 0.85em;
+  background: var(--dark-card);
+  border: 1px solid var(--dark-border);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.docs pre {
+  background: var(--dark-card);
+  border: 1px solid var(--dark-border);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin-bottom: 16px;
+}
+
+.docs pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.docs table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+}
+
+.docs th,
+.docs td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--dark-border);
+}
+
+.docs th {
+  color: var(--text-heading);
+  font-weight: 600;
+}
+
+.docs td {
+  color: var(--text-muted);
+}
+
+.docs td code {
+  font-size: 0.8rem;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
   .hero h1 {
