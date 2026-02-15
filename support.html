@@ -17,6 +17,8 @@
       </a>
       <div class="nav-links">
         <a href="/">Home</a>
+        <a href="guide-claude-code.html">Claude Code Guide</a>
+        <a href="guide-windsurf.html">Windsurf Guide</a>
       </div>
     </div>
   </nav>
@@ -26,6 +28,13 @@
       <h1>Support & Setup Guide</h1>
 
       <h2>Getting Started</h2>
+      <p>For a more detailed walkthrough including how the rules system works, see the <a href="guide-claude-code.html">Claude Code setup guide</a>.</p>
+
+      <h3>Prerequisites</h3>
+      <p>The hook scripts require <code>jq</code> and <code>curl</code> to be installed on your machine. These are pre-installed on most macOS and Linux systems. To check:</p>
+      <pre><code>jq --version
+curl --version</code></pre>
+      <p>If either is missing, install via your package manager (e.g., <code>brew install jq</code> on macOS, <code>apt install jq</code> on Ubuntu/Debian).</p>
 
       <h3>1. Install the App</h3>
       <p>Download Greenlight from the App Store and open it. The app will automatically generate a unique device ID and connect to the relay server.</p>
@@ -48,7 +57,29 @@ chmod +x ~/greenlight-hook.sh</code></pre>
         "hooks": [
           {
             "type": "command",
+            "command": "~/greenlight-hook.sh --device-id YOUR_DEVICE_ID --project myproject --activity"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "idle_prompt",
+        "hooks": [
+          {
+            "type": "command",
             "command": "~/greenlight-hook.sh --device-id YOUR_DEVICE_ID --project myproject"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/greenlight-hook.sh --device-id YOUR_DEVICE_ID --project myproject --activity"
           }
         ]
       }
@@ -56,6 +87,7 @@ chmod +x ~/greenlight-hook.sh</code></pre>
   }
 }</code></pre>
       <p>Replace <code>YOUR_DEVICE_ID</code> with the device ID from the app, and <code>myproject</code> with your project's name. The <code>--project</code> flag adds a project badge in the app so you know which project a request is coming from.</p>
+      <p>The <code>--activity</code> flag streams Claude's transcript to the Activity tab so you can see what Claude is doing in real time. The <code>Notification</code> hook sends a push notification when Claude is idle and waiting for input. The <code>UserPromptSubmit</code> hook starts the transcript streamer immediately when you submit a prompt, so streaming begins right away rather than waiting for the first permission request. All three are optional.</p>
       <p><strong>Important:</strong> Do not add the hook to your global configuration (<code>~/.claude/settings.json</code>). Claude Code merges global and project settings, so having the hook in both places will send two requests for every action.</p>
 
       <h3>5. Test It</h3>
@@ -63,7 +95,44 @@ chmod +x ~/greenlight-hook.sh</code></pre>
       <pre><code>claude "list files in /etc"</code></pre>
       <p>You should see a request appear in the app!</p>
 
+      <h2>Windsurf (Cascade) Setup</h2>
+      <p>Greenlight also supports <a href="https://windsurf.com">Windsurf</a> via its Cascade Hooks system. For a more detailed walkthrough, see the <a href="guide-windsurf.html">Windsurf setup guide</a>.</p>
+
+      <h3>1. Install the Windsurf Hook Script</h3>
+      <p>Download the Windsurf-specific hook script:</p>
+      <pre><code>curl -o ~/greenlight-windsurf.sh https://getgreenlight.github.io/greenlight-windsurf.sh
+chmod +x ~/greenlight-windsurf.sh</code></pre>
+
+      <h3>2. Configure Windsurf Hooks</h3>
+      <p>Create or edit the hooks configuration file at <code>~/.codeium/windsurf/hooks.json</code>:</p>
+      <pre><code>{
+  "hooks": {
+    "pre_run_command": [{
+      "command": "~/greenlight-windsurf.sh --device-id YOUR_DEVICE_ID",
+      "show_output": true
+    }],
+    "pre_write_code": [{
+      "command": "~/greenlight-windsurf.sh --device-id YOUR_DEVICE_ID",
+      "show_output": true
+    }],
+    "pre_read_code": [{
+      "command": "~/greenlight-windsurf.sh --device-id YOUR_DEVICE_ID",
+      "show_output": true
+    }],
+    "pre_mcp_tool_use": [{
+      "command": "~/greenlight-windsurf.sh --device-id YOUR_DEVICE_ID",
+      "show_output": true
+    }]
+  }
+}</code></pre>
+      <p>Replace <code>YOUR_DEVICE_ID</code> with the device ID from the app. The project name is detected automatically from the working directory or git repository root.</p>
+      <p>You can also place a <code>.windsurf/hooks.json</code> file in a project directory for per-project configuration.</p>
+
+      <h3>3. Test It</h3>
+      <p>Open a project in Windsurf, start a Cascade session, and ask it to run a command or edit a file. You should see the request appear in the app with a <strong>windsurf</strong> badge.</p>
+
       <h2>Hook Script Options</h2>
+      <p>Both hook scripts support the same options:</p>
       <table>
         <thead>
           <tr>
@@ -81,15 +150,21 @@ chmod +x ~/greenlight-hook.sh</code></pre>
           <tr>
             <td><code>--project NAME</code></td>
             <td>Project name shown in the app</td>
-            <td>(none)</td>
+            <td>(auto-detected)</td>
           </tr>
           <tr>
-            <td><code>--timeout SECONDS</code></td>
-            <td>Request timeout</td>
-            <td>60</td>
+            <td><code>--activity</code></td>
+            <td>Stream Claude's transcript to the app (Claude Code only, requires Greenlight Pro)</td>
+            <td>Off</td>
+          </tr>
+          <tr>
+            <td><code>--server URL</code></td>
+            <td>Relay server URL</td>
+            <td>https://permit.dnmfarrell.com</td>
           </tr>
         </tbody>
       </table>
+      <p>The server URL can also be set via the <code>GREENLIGHT_SERVER</code> environment variable.</p>
 
       <h2>Using the App</h2>
 
@@ -131,7 +206,7 @@ chmod +x ~/greenlight-hook.sh</code></pre>
 
       <h3>Requests timing out</h3>
       <ul>
-        <li>The default timeout is 60 seconds. If you need more time, increase it with <code>--timeout 300</code> in the hook config.</li>
+        <li>The default timeout is 590 seconds (just under Claude Code's 600 second hook limit). You can adjust it with <code>--timeout SECONDS</code> in the hook config.</li>
         <li>If the app is not connected and push notifications fail, the request will time out and be denied.</li>
       </ul>
 
@@ -148,7 +223,7 @@ chmod +x ~/greenlight-hook.sh</code></pre>
         <a href="support.html">Support</a>
         <a href="mailto:greenlight@dnmfarrell.com">Contact</a>
       </div>
-      <p class="copyright">&copy; 2025 David Farrell. All rights reserved.</p>
+      <p class="copyright">&copy; 2025-2026 David Farrell. All rights reserved.</p>
     </div>
   </footer>
 </body>

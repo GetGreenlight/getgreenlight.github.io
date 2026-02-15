@@ -23,7 +23,7 @@
   <div class="legal">
     <div class="container">
       <h1>Privacy Policy</h1>
-      <p class="last-updated">Last updated: February 10, 2025</p>
+      <p class="last-updated">Last updated: February 20, 2026</p>
 
       <p>Greenlight ("we", "our", "the Service") is operated by David Farrell. This policy describes what data we collect, how we use it, and your rights regarding that data.</p>
 
@@ -35,6 +35,7 @@
         <li><strong>APNs token:</strong> A token provided by Apple Push Notification service, used solely to deliver push notifications when the app is not in the foreground. This token is device-specific and does not identify you personally.</li>
         <li><strong>Permission request data:</strong> When your AI coding agent sends a permission request, the request content (tool name, command, file path, etc.) is relayed through our server to your device. Request metadata — including the tool name, tool input, your decision, and a timestamp — is logged and archived for operational and dispute resolution purposes. These logs allow us to investigate issues and verify what actions were requested and how they were resolved.</li>
         <li><strong>Always-allow rules:</strong> If you choose "Always Allow" for a request, a pattern-based rule is stored on the server associated with your device identifier. You can view and delete these rules at any time in the app.</li>
+        <li><strong>Activity stream data:</strong> If you enable the <code>--activity</code> flag, Claude Code's transcript entries (tool calls, text responses, and user messages) are streamed through our server to your device in real time. This data is relayed in memory only &mdash; it is never written to disk, logged, or stored on our servers.</li>
       </ul>
 
       <h2>2. Data We Do Not Collect</h2>
@@ -61,11 +62,11 @@
         <li>The relay server stores your device identifier (hashed secret) and APNs token in a database to route requests and send notifications.</li>
         <li>Always-allow rules are stored server-side and associated with your device identifier.</li>
         <li>All communication between the app and the server uses TLS encryption (HTTPS/WSS).</li>
-        <li>Permission request content is transient and is not logged or stored beyond the lifetime of the request.</li>
+        <li>Permission request metadata (tool name, tool input, decision, and timestamps) is logged for operational, audit, and dispute resolution purposes. Active log files are rotated automatically; older logs may be moved to cold storage and retained indefinitely.</li>
       </ul>
 
       <h2>5. Data Retention</h2>
-      <p>Device registrations and always-allow rules are retained as long as you use the Service. Permission request logs are retained indefinitely for operational and dispute resolution purposes. If you uninstall the app, your device registration will become orphaned (no further requests can be delivered). You may contact us to request deletion of your server-side data at any time.</p>
+      <p>Device registrations and always-allow rules are retained as long as you use the Service. Permission request logs may be archived to cold storage and retained indefinitely for audit and compliance purposes. If you uninstall the app, your device registration will become orphaned (no further requests can be delivered).</p>
 
       <h2>6. Children's Privacy</h2>
       <p>Greenlight is not directed at children under 13 and we do not knowingly collect data from children.</p>
@@ -86,7 +87,7 @@
         <a href="support.html">Support</a>
         <a href="mailto:greenlight@dnmfarrell.com">Contact</a>
       </div>
-      <p class="copyright">&copy; 2025 David Farrell. All rights reserved.</p>
+      <p class="copyright">&copy; 2025-2026 David Farrell. All rights reserved.</p>
     </div>
   </footer>
 </body>

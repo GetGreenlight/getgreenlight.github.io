@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code Setup Guide - Greenlight</title>
+  <meta name="description" content="Set up Greenlight with Claude Code. Approve Claude Code permission requests from your iPhone with push notifications, smart rules, and risk-annotated commands.">
+  <meta name="keywords" content="Claude Code, Claude Code approval, Claude Code permissions, Claude Code hooks, AI agent approval, remote approval, Greenlight">
+  <link rel="icon" type="image/png" href="greenlight-logo-1024.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav>
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="greenlight-logo-1024.png" alt="Greenlight logo">
+        Greenlight
+      </a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="guide-windsurf.html">Windsurf Guide</a>
+        <a href="support.html">Support</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="docs">
+    <div class="container">
+      <h1>Claude Code + Greenlight Setup Guide</h1>
+
+      <p>Claude Code's permission system keeps you in control of what the agent does. Greenlight extends it to your phone &mdash; permission requests arrive as push notifications, and you can approve, deny, or create always-allow rules from anywhere.</p>
+
+      <p>This guide covers installation, configuration, and how to get the most out of the rules system.</p>
+
+      <h2>What You'll Need</h2>
+      <ul>
+        <li><a href="https://docs.anthropic.com/en/docs/claude-code">Claude Code</a> installed and working</li>
+        <li>An iPhone with <a href="https://apps.apple.com/us/app/greenlight-ai/id6758998897">Greenlight</a> installed</li>
+        <li><code>jq</code> and <code>curl</code> on your machine (pre-installed on most macOS and Linux systems)</li>
+      </ul>
+      <p>Check with:</p>
+      <pre><code>jq --version
+curl --version</code></pre>
+      <p>If either is missing: <code>brew install jq</code> on macOS, or <code>apt install jq</code> on Ubuntu/Debian.</p>
+
+      <h2>Step 1: Get Your Device ID</h2>
+      <p>Open Greenlight on your phone and go to the <strong>About</strong> tab. Tap your Device ID to copy it to the clipboard. You'll paste this into the hook configuration next.</p>
+
+      <h2>Step 2: Install the Hook Script</h2>
+      <pre><code>curl -o ~/greenlight-hook.sh https://getgreenlight.github.io/greenlight-hook.sh
+chmod +x ~/greenlight-hook.sh</code></pre>
+      <p>This is a shell script that Claude Code calls whenever it needs permission. It forwards the request to Greenlight's relay server and waits for your response.</p>
+
+      <h2>Step 3: Configure Claude Code</h2>
+      <p>Add a hook to your <strong>per-project</strong> settings file. Create or edit <code>.claude/settings.local.json</code> in your project root:</p>
+      <pre><code>{
+  "hooks": {
+    "PermissionRequest": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/greenlight-hook.sh --device-id YOUR_DEVICE_ID --project myproject --activity"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "idle_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/greenlight-hook.sh --device-id YOUR_DEVICE_ID --project myproject"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/greenlight-hook.sh --device-id YOUR_DEVICE_ID --project myproject --activity"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+      <p>Replace <code>YOUR_DEVICE_ID</code> with the ID from the app. Replace <code>myproject</code> with whatever you want the project badge to say in the app.</p>
+
+      <h3>What the flags do</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Flag</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>--device-id</code></td>
+            <td>Routes requests to your phone. Required.</td>
+          </tr>
+          <tr>
+            <td><code>--project</code></td>
+            <td>Adds a project badge so you know which codebase the request is from. Rules are scoped per-project.</td>
+          </tr>
+          <tr>
+            <td><code>--activity</code></td>
+            <td>Streams Claude's transcript to the Activity tab so you can see what Claude is doing in real time. Requires Greenlight Pro. Optional.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>The Notification hook</h3>
+      <p>The <code>Notification</code> hook with <code>idle_prompt</code> matcher sends a push notification when Claude has finished and is waiting for your next prompt. Optional but useful if you're away from the terminal.</p>
+
+      <h3>The UserPromptSubmit hook</h3>
+      <p>The <code>UserPromptSubmit</code> hook starts the transcript streamer as soon as you submit a prompt, so the activity stream begins immediately rather than waiting for the first permission request. Recommended if you use <code>--activity</code>.</p>
+
+      <h3>Global vs. per-project</h3>
+      <p><strong>Do not</strong> add the hook to your global config (<code>~/.claude/settings.json</code>). Claude Code merges global and project settings, so you'd get duplicate requests. Keep it per-project.</p>
+
+      <h2>Step 4: Test It</h2>
+      <pre><code>claude "list files in /etc"</code></pre>
+      <p>You should see a request appear on your phone. Tap <strong>Allow</strong> and Claude will continue. If you tap <strong>Always Allow</strong>, a rule is created and Claude won't ask again for that class of command in this project.</p>
+
+      <h2>How the Rules Work</h2>
+      <p>Rules are the core of the system. Tapping "Always Allow" doesn't just approve the request &mdash; it generates a pattern that auto-approves future matching commands without interrupting you.</p>
+
+      <h3>Pattern generation</h3>
+      <p>Patterns are <strong>subcommand-aware</strong>. The system knows that <code>git push</code> and <code>git status</code> are different operations:</p>
+      <ul>
+        <li><code>go build ./cmd/foo</code> &rarr; pattern <code>Bash(go build **)</code> &mdash; matches any <code>go build</code></li>
+        <li><code>git push origin main</code> &rarr; pattern <code>Bash(git push **)</code> &mdash; matches any <code>git push</code>, but not <code>git reset</code></li>
+        <li><code>aws s3 cp file.txt s3://bucket/</code> &rarr; pattern <code>Bash(aws s3 cp **)</code> &mdash; three-word prefix for AWS/GCloud</li>
+      </ul>
+
+      <h3>Destructive command safety</h3>
+      <p>Commands like <code>rm</code>, <code>sudo</code>, <code>kill</code>, and <code>chmod</code> use <strong>exact matching</strong>. Granting <code>rm -rf /tmp/coverage</code> creates a rule that matches only that exact string &mdash; not <code>rm -rf /home</code>, not <code>rm -rf /tmp/coverage /etc</code>.</p>
+
+      <h3>Compound commands</h3>
+      <p>When Claude runs <code>git add . && git commit -m "msg" && git push</code>, the system splits it into three segments and generates a separate pattern for each. All segments must have matching rules for the compound command to auto-approve. If you've granted <code>git add</code> and <code>git commit</code> but not <code>git push</code>, the compound command still comes to your phone.</p>
+      <p>In the app, each segment is color-coded by risk (green/orange/red) and segments already covered by rules show a checkmark overlay &mdash; so you can see at a glance which part of the command is the one that needs your attention.</p>
+
+      <h3>File operations</h3>
+      <p>For <code>Read</code>, <code>Write</code>, and <code>Edit</code> tools, patterns match on the directory. Granting an edit to <code>/home/user/project/src/main.go</code> creates the pattern <code>Edit(/home/user/project/src/**)</code>, which covers future edits in that directory.</p>
+
+      <h2>Interactive Prompts</h2>
+      <p>Greenlight handles Claude Code's interactive features too:</p>
+      <ul>
+        <li><strong>AskUserQuestion</strong> &mdash; renders as radio buttons (single-select) or checkboxes (multi-select) with an "Other" free-text option, right on your phone.</li>
+        <li><strong>ExitPlanMode</strong> &mdash; shows Claude's plan with full markdown rendering (headers, bullets, code blocks) and the allowed actions.</li>
+      </ul>
+
+      <h2>Tips</h2>
+      <ul>
+        <li>The first few sessions generate the most requests. Once you've built up rules for your common patterns, interruptions drop off quickly.</li>
+        <li>Check the <strong>Grants</strong> tab to see your rules grouped by project. Swipe left to delete any rule.</li>
+        <li>If you're in a Focus mode on iOS, make sure Time Sensitive notifications are allowed for Greenlight &mdash; permission requests use this priority.</li>
+        <li>The timeout is 590 seconds by default. Adjust with <code>--timeout SECONDS</code> in the hook command.</li>
+      </ul>
+
+      <h2>Troubleshooting</h2>
+      <p>See the <a href="support.html#troubleshooting">troubleshooting section</a> of the support page for common issues.</p>
+
+      <h2>Questions?</h2>
+      <p>Email <a href="mailto:greenlight@dnmfarrell.com">greenlight@dnmfarrell.com</a>.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="support.html">Support</a>
+        <a href="mailto:greenlight@dnmfarrell.com">Contact</a>
+      </div>
+      <p class="copyright">&copy; 2025-2026 David Farrell. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

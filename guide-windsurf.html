@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Windsurf Setup Guide - Greenlight</title>
+  <meta name="description" content="Set up Greenlight with Windsurf Cascade. Approve Windsurf actions from your iPhone — commands, file edits, file reads, and MCP tool use.">
+  <meta name="keywords" content="Windsurf, Windsurf Cascade, Windsurf hooks, Windsurf approval, AI agent approval, remote approval, Greenlight, Codeium">
+  <link rel="icon" type="image/png" href="greenlight-logo-1024.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav>
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="greenlight-logo-1024.png" alt="Greenlight logo">
+        Greenlight
+      </a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="guide-claude-code.html">Claude Code Guide</a>
+        <a href="support.html">Support</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="docs">
+    <div class="container">
+      <h1>Windsurf + Greenlight Setup Guide</h1>
+
+      <p>Greenlight works with Windsurf's <a href="https://windsurf.com">Cascade</a> hooks system. All four hook types are supported: command execution, file writes, file reads, and MCP tool use. Permission requests arrive on your phone as push notifications, and you can build always-allow rules so Cascade interrupts you less over time.</p>
+
+      <h2>What You'll Need</h2>
+      <ul>
+        <li><a href="https://windsurf.com">Windsurf</a> installed</li>
+        <li>An iPhone with <a href="https://apps.apple.com/us/app/greenlight-ai/id6758998897">Greenlight</a> installed</li>
+        <li><code>jq</code> and <code>curl</code> on your machine (pre-installed on most macOS and Linux systems)</li>
+      </ul>
+      <p>Check with:</p>
+      <pre><code>jq --version
+curl --version</code></pre>
+      <p>If either is missing: <code>brew install jq</code> on macOS, or <code>apt install jq</code> on Ubuntu/Debian.</p>
+
+      <h2>Step 1: Get Your Device ID</h2>
+      <p>Open Greenlight on your phone and go to the <strong>About</strong> tab. Tap your Device ID to copy it to the clipboard.</p>
+
+      <h2>Step 2: Install the Hook Script</h2>
+      <pre><code>curl -o ~/greenlight-windsurf.sh https://getgreenlight.github.io/greenlight-windsurf.sh
+chmod +x ~/greenlight-windsurf.sh</code></pre>
+
+      <h2>Step 3: Configure Windsurf</h2>
+      <p>Create or edit the hooks configuration file at <code>~/.codeium/windsurf/hooks.json</code>:</p>
+      <pre><code>{
+  "hooks": {
+    "pre_run_command": [{
+      "command": "~/greenlight-windsurf.sh --device-id YOUR_DEVICE_ID",
+      "show_output": true
+    }],
+    "pre_write_code": [{
+      "command": "~/greenlight-windsurf.sh --device-id YOUR_DEVICE_ID",
+      "show_output": true
+    }],
+    "pre_read_code": [{
+      "command": "~/greenlight-windsurf.sh --device-id YOUR_DEVICE_ID",
+      "show_output": true
+    }],
+    "pre_mcp_tool_use": [{
+      "command": "~/greenlight-windsurf.sh --device-id YOUR_DEVICE_ID",
+      "show_output": true
+    }]
+  }
+}</code></pre>
+      <p>Replace <code>YOUR_DEVICE_ID</code> with the ID from the app.</p>
+
+      <h3>What each hook covers</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Hook</th>
+            <th>Triggers when Cascade wants to&hellip;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>pre_run_command</code></td>
+            <td>Execute a shell command</td>
+          </tr>
+          <tr>
+            <td><code>pre_write_code</code></td>
+            <td>Write or edit a file</td>
+          </tr>
+          <tr>
+            <td><code>pre_read_code</code></td>
+            <td>Read a file</td>
+          </tr>
+          <tr>
+            <td><code>pre_mcp_tool_use</code></td>
+            <td>Call an MCP tool</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>You can omit any hook type you don't want Greenlight to gate. For example, if you're comfortable with Cascade reading files freely, leave out <code>pre_read_code</code>.</p>
+
+      <h3>Project detection</h3>
+      <p>The Windsurf hook script detects the project name automatically from the git repository root or working directory. You don't need a <code>--project</code> flag (though you can override with one if you prefer).</p>
+
+      <h3>Per-project configuration</h3>
+      <p>You can also place a <code>.windsurf/hooks.json</code> file in a project directory to configure hooks for that project only.</p>
+
+      <h2>Step 4: Test It</h2>
+      <p>Open a project in Windsurf, start a Cascade session, and ask it to run a command or edit a file. You should see the request appear in Greenlight with a <strong>windsurf</strong> badge.</p>
+
+      <h2>How the Rules Work</h2>
+      <p>The rules system works the same way across all agents. When you tap "Always Allow," a pattern is generated and stored for that project. Future matching requests are auto-approved silently.</p>
+
+      <h3>Commands</h3>
+      <p>Patterns are subcommand-aware. <code>npm install express</code> creates the pattern <code>Bash(npm install **)</code>, which matches any <code>npm install</code> but not <code>npm publish</code>. Destructive commands like <code>rm</code> use exact matching for safety.</p>
+
+      <h3>File operations</h3>
+      <p>File reads and writes match on the directory. Granting a write to <code>src/components/Header.tsx</code> creates a rule for <code>Edit(src/components/**)</code>, covering future edits in that directory.</p>
+
+      <h3>MCP tools</h3>
+      <p>MCP tool calls show the server name, tool name, and arguments. Always-allow rules for MCP tools use the tool name as the pattern.</p>
+
+      <h2>Using Greenlight with Multiple Agents</h2>
+      <p>If you use both Windsurf and Claude Code, Greenlight works as a single approval layer across both. Rules are scoped per-project, not per-agent &mdash; a rule you create from a Claude Code request will also auto-approve the same action from Windsurf, and vice versa. Each request shows an agent badge so you know which tool sent it.</p>
+
+      <h2>Troubleshooting</h2>
+      <p>See the <a href="support.html">troubleshooting section</a> of the support page for common issues.</p>
+
+      <h2>Questions?</h2>
+      <p>Email <a href="mailto:greenlight@dnmfarrell.com">greenlight@dnmfarrell.com</a>.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="support.html">Support</a>
+        <a href="mailto:greenlight@dnmfarrell.com">Contact</a>
+      </div>
+      <p class="copyright">&copy; 2025-2026 David Farrell. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>
