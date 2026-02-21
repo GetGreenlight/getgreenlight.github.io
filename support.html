@@ -27,6 +27,12 @@
     <div class="container">
       <h1>Support & Setup Guide</h1>
 
+      <h2>Updating the Hook Script</h2>
+      <p>If you already have Greenlight set up, re-run the install command to get the latest hook script with session registration and automatic activity streaming:</p>
+      <pre><code>curl -o ~/greenlight-hook.sh https://getgreenlight.github.io/greenlight-hook.sh
+chmod +x ~/greenlight-hook.sh</code></pre>
+      <p>The new hook no longer needs the <code>--activity</code> flag &mdash; streaming is automatic. You can remove it from your hooks config. The <code>--project</code> flag is now required.</p>
+
       <h2>Getting Started</h2>
       <p>For a more detailed walkthrough including how the rules system works, see the <a href="guide-claude-code.html">Claude Code setup guide</a>.</p>
 
