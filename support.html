@@ -57,7 +57,7 @@ chmod +x ~/greenlight-hook.sh</code></pre>
         "hooks": [
           {
             "type": "command",
-            "command": "~/greenlight-hook.sh --device-id YOUR_DEVICE_ID --project myproject --activity"
+            "command": "~/greenlight-hook.sh --device-id YOUR_DEVICE_ID --project myproject"
           }
         ]
       }
@@ -79,15 +79,16 @@ chmod +x ~/greenlight-hook.sh</code></pre>
         "hooks": [
           {
             "type": "command",
-            "command": "~/greenlight-hook.sh --device-id YOUR_DEVICE_ID --project myproject --activity"
+            "command": "~/greenlight-hook.sh --device-id YOUR_DEVICE_ID --project myproject"
           }
         ]
       }
     ]
   }
 }</code></pre>
-      <p>Replace <code>YOUR_DEVICE_ID</code> with the device ID from the app, and <code>myproject</code> with your project's name. The <code>--project</code> flag adds a project badge in the app so you know which project a request is coming from.</p>
-      <p>The <code>--activity</code> flag streams Claude's transcript to the Activity tab so you can see what Claude is doing in real time. The <code>Notification</code> hook sends a push notification when Claude is idle and waiting for input. The <code>UserPromptSubmit</code> hook starts the transcript streamer immediately when you submit a prompt, so streaming begins right away rather than waiting for the first permission request. All three are optional.</p>
+      <p>Replace <code>YOUR_DEVICE_ID</code> with the device ID from the app, and <code>myproject</code> with your project's name. The <code>--project</code> flag is required &mdash; it names the project in the app and scopes rules per-project.</p>
+      <p>The <code>Notification</code> hook sends a push notification when Claude is idle and waiting for input. The <code>UserPromptSubmit</code> hook starts the activity streamer as soon as you submit a prompt, so you can watch Claude work in real time (Greenlight Pro). Both are optional but recommended.</p>
+      <p>The first time a new Claude Code session runs, it will register with your phone. Tap <strong>Allow</strong> on the enrollment prompt to approve it.</p>
       <p><strong>Important:</strong> Do not add the hook to your global configuration (<code>~/.claude/settings.json</code>). Claude Code merges global and project settings, so having the hook in both places will send two requests for every action.</p>
 
       <h3>5. Test It</h3>
@@ -149,13 +150,8 @@ chmod +x ~/greenlight-windsurf.sh</code></pre>
           </tr>
           <tr>
             <td><code>--project NAME</code></td>
-            <td>Project name shown in the app</td>
-            <td>(auto-detected)</td>
-          </tr>
-          <tr>
-            <td><code>--activity</code></td>
-            <td>Stream Claude's transcript to the app (Claude Code only, requires Greenlight Pro)</td>
-            <td>Off</td>
+            <td>Project name shown in the app. Rules are scoped per-project.</td>
+            <td>Required</td>
           </tr>
           <tr>
             <td><code>--server URL</code></td>

@@ -61,7 +61,7 @@ chmod +x ~/greenlight-hook.sh</code></pre>
         "hooks": [
           {
             "type": "command",
-            "command": "~/greenlight-hook.sh --device-id YOUR_DEVICE_ID --project myproject --activity"
+            "command": "~/greenlight-hook.sh --device-id YOUR_DEVICE_ID --project myproject"
           }
         ]
       }
@@ -83,7 +83,7 @@ chmod +x ~/greenlight-hook.sh</code></pre>
         "hooks": [
           {
             "type": "command",
-            "command": "~/greenlight-hook.sh --device-id YOUR_DEVICE_ID --project myproject --activity"
+            "command": "~/greenlight-hook.sh --device-id YOUR_DEVICE_ID --project myproject"
           }
         ]
       }
@@ -107,11 +107,7 @@ chmod +x ~/greenlight-hook.sh</code></pre>
           </tr>
           <tr>
             <td><code>--project</code></td>
-            <td>Adds a project badge so you know which codebase the request is from. Rules are scoped per-project.</td>
-          </tr>
-          <tr>
-            <td><code>--activity</code></td>
-            <td>Streams Claude's transcript to the Activity tab so you can see what Claude is doing in real time. Requires Greenlight Pro. Optional.</td>
+            <td>Names the project so you know which codebase the request is from. Rules are scoped per-project. Required.</td>
           </tr>
         </tbody>
       </table>
@@ -120,7 +116,10 @@ chmod +x ~/greenlight-hook.sh</code></pre>
       <p>The <code>Notification</code> hook with <code>idle_prompt</code> matcher sends a push notification when Claude has finished and is waiting for your next prompt. Optional but useful if you're away from the terminal.</p>
 
       <h3>The UserPromptSubmit hook</h3>
-      <p>The <code>UserPromptSubmit</code> hook starts the transcript streamer as soon as you submit a prompt, so the activity stream begins immediately rather than waiting for the first permission request. Recommended if you use <code>--activity</code>.</p>
+      <p>The <code>UserPromptSubmit</code> hook starts the activity streamer as soon as you submit a prompt, so you can watch Claude work in real time from your phone (Greenlight Pro). Without it, streaming starts on the first permission request instead.</p>
+
+      <h3>Session enrollment</h3>
+      <p>The first time the hook runs for a new Claude Code session, it registers the session with your phone. You'll see an enrollment prompt in the app &mdash; tap <strong>Allow</strong> to approve it. Once enrolled, that session can send requests and stream activity. You can delete old sessions from the Activity tab.</p>
 
       <h3>Global vs. per-project</h3>
       <p><strong>Do not</strong> add the hook to your global config (<code>~/.claude/settings.json</code>). Claude Code merges global and project settings, so you'd get duplicate requests. Keep it per-project.</p>
