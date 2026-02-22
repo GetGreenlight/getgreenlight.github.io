@@ -36,7 +36,9 @@
     <div class="container">
       <h1>Windsurf + Greenlight Setup Guide</h1>
 
-      <p>Greenlight works with Windsurf's <a href="https://windsurf.com">Cascade</a> hooks system. All four hook types are supported: command execution, file writes, file reads, and MCP tool use. Permission requests arrive on your phone as push notifications, and you can build always-allow rules so Cascade interrupts you less over time.</p>
+      <p>Greenlight works with Windsurf's <a href="https://windsurf.com">Cascade</a> hooks system. All four hook types are supported: command execution, file writes, file reads, and MCP tool use. You can build always-allow rules so Cascade interrupts you less over time.</p>
+
+      <p><strong>Note:</strong> Windsurf integration supports permission requests only. Live activity streaming, session management, and push notifications are available with <a href="guide-claude-code.html">Claude Code</a>.</p>
 
       <h2>What You'll Need</h2>
       <ul>
@@ -61,24 +63,24 @@ chmod +x ~/greenlight-windsurf.sh</code></pre>
       <pre><code>{
   "hooks": {
     "pre_run_command": [{
-      "command": "~/greenlight-windsurf.sh --device-id YOUR_DEVICE_ID",
+      "command": "~/greenlight-windsurf.sh --device-id YOUR_DEVICE_ID --project YOUR_PROJECT_NAME",
       "show_output": true
     }],
     "pre_write_code": [{
-      "command": "~/greenlight-windsurf.sh --device-id YOUR_DEVICE_ID",
+      "command": "~/greenlight-windsurf.sh --device-id YOUR_DEVICE_ID --project YOUR_PROJECT_NAME",
       "show_output": true
     }],
     "pre_read_code": [{
-      "command": "~/greenlight-windsurf.sh --device-id YOUR_DEVICE_ID",
+      "command": "~/greenlight-windsurf.sh --device-id YOUR_DEVICE_ID --project YOUR_PROJECT_NAME",
       "show_output": true
     }],
     "pre_mcp_tool_use": [{
-      "command": "~/greenlight-windsurf.sh --device-id YOUR_DEVICE_ID",
+      "command": "~/greenlight-windsurf.sh --device-id YOUR_DEVICE_ID --project YOUR_PROJECT_NAME",
       "show_output": true
     }]
   }
 }</code></pre>
-      <p>Replace <code>YOUR_DEVICE_ID</code> with the ID from the app.</p>
+      <p>Replace <code>YOUR_DEVICE_ID</code> with the ID from the app and <code>YOUR_PROJECT_NAME</code> with a name for your project (e.g. <code>myapp</code>). Rules are scoped per-project.</p>
 
       <h3>What each hook covers</h3>
       <table>
@@ -109,11 +111,8 @@ chmod +x ~/greenlight-windsurf.sh</code></pre>
       </table>
       <p>You can omit any hook type you don't want Greenlight to gate. For example, if you're comfortable with Cascade reading files freely, leave out <code>pre_read_code</code>.</p>
 
-      <h3>Project detection</h3>
-      <p>The Windsurf hook script detects the project name automatically from the git repository root or working directory. You don't need a <code>--project</code> flag (though you can override with one if you prefer).</p>
-
       <h3>Per-project configuration</h3>
-      <p>You can also place a <code>.windsurf/hooks.json</code> file in a project directory to configure hooks for that project only.</p>
+      <p>You can place a <code>.windsurf/hooks.json</code> file in a project directory to configure hooks for that project only, with a different <code>--project</code> name per workspace.</p>
 
       <h2>Step 4: Test It</h2>
       <p>Open a project in Windsurf, start a Cascade session, and ask it to run a command or edit a file. You should see the request appear in Greenlight with a <strong>windsurf</strong> badge.</p>

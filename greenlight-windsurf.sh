@@ -38,7 +38,7 @@
 
 # Defaults
 DEVICE_ID=""
-GREENLIGHT_SERVER=${GREENLIGHT_SERVER-"https://permit.dnmfarrell.com"}
+GREENLIGHT_SERVER="https://permit.dnmfarrell.com"
 TIMEOUT="595"
 PROJECT=""
 
@@ -47,10 +47,6 @@ while [[ $# -gt 0 ]]; do
     case $1 in
         --device-id)
             DEVICE_ID="$2"
-            shift 2
-            ;;
-        --server)
-            GREENLIGHT_SERVER="$2"
             shift 2
             ;;
         --project)
@@ -63,11 +59,22 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# Fall back to environment variable
+# Fall back to environment variables if args not provided
 DEVICE_ID="${DEVICE_ID:-$GREENLIGHT_DEVICE_ID}"
+PROJECT="${PROJECT:-$GREENLIGHT_PROJECT}"
+
+if ! command -v jq >/dev/null 2>&1; then
+    echo "Greenlight hook requires jq but it's not installed. Install it with: brew install jq (macOS) or apt-get install jq (Linux)" >&2
+    exit 2
+fi
 
 if [ -z "$DEVICE_ID" ]; then
     echo "Greenlight device ID not configured. See https://getgreenlight.github.io/support.html" >&2
+    exit 2
+fi
+
+if [ -z "$PROJECT" ]; then
+    echo "Greenlight hook is missing the --project flag. Add --project PROJECT_NAME to the hook command in your hooks.json config. See https://getgreenlight.github.io/guide-windsurf.html" >&2
     exit 2
 fi
 
