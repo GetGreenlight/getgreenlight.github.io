@@ -35,8 +35,9 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# Fall back to environment variable if arg not provided
+# Fall back to environment variables if args not provided
 DEVICE_ID="${DEVICE_ID:-$GREENLIGHT_DEVICE_ID}"
+PROJECT="${PROJECT:-$GREENLIGHT_PROJECT}"
 
 if ! command -v jq >/dev/null 2>&1; then
     cat << 'EOF'
@@ -204,8 +205,8 @@ INPUT=$(cat)
 # Detect hook event type
 HOOK_EVENT=$(echo "$INPUT" | jq -r '.hook_event_name // "PermissionRequest"')
 
-# Derive relay_id: prefer REMUX_ID (remux session), fall back to Claude session_id
-RELAY_ID="${REMUX_ID:-}"
+# Derive relay_id: prefer GREENLIGHT_SESSION_ID (remux session), fall back to Claude session_id
+RELAY_ID="${GREENLIGHT_SESSION_ID:-}"
 if [ -z "$RELAY_ID" ]; then
     RELAY_ID=$(echo "$INPUT" | jq -r '.session_id // empty')
 fi
