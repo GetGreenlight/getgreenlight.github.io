@@ -10,7 +10,7 @@
 
 # Defaults
 DEVICE_ID=""
-GREENLIGHT_SERVER=${GREENLIGHT_SERVER-"https://permit.dnmfarrell.com"}
+GREENLIGHT_SERVER="https://permit.dnmfarrell.com"
 TIMEOUT="595"
 PROJECT=""
 
@@ -19,10 +19,6 @@ while [[ $# -gt 0 ]]; do
     case $1 in
         --device-id)
             DEVICE_ID="$2"
-            shift 2
-            ;;
-        --server)
-            GREENLIGHT_SERVER="$2"
             shift 2
             ;;
         --project)
