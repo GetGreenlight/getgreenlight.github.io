@@ -279,9 +279,9 @@ if [ -n "$RELAY_ID" ]; then
 fi
 
 if [ -n "$PROJECT" ]; then
-    PAYLOAD=$(echo "$INPUT" | jq --arg did "$DEVICE_ID" --arg proj "$PROJECT" --arg rid "$RELAY_ID" '. + {device_id: $did, project: $proj, relay_id: $rid, agent: "claude-code"}')
+    PAYLOAD=$(echo "$INPUT" | jq --arg did "$DEVICE_ID" --arg proj "$PROJECT" --arg rid "$RELAY_ID" --arg home "$HOME" '. + {device_id: $did, project: $proj, relay_id: $rid, agent: "claude-code", home: $home}')
 else
-    PAYLOAD=$(echo "$INPUT" | jq --arg did "$DEVICE_ID" --arg rid "$RELAY_ID" '. + {device_id: $did, relay_id: $rid, agent: "claude-code"}')
+    PAYLOAD=$(echo "$INPUT" | jq --arg did "$DEVICE_ID" --arg rid "$RELAY_ID" --arg home "$HOME" '. + {device_id: $did, relay_id: $rid, agent: "claude-code", home: $home}')
 fi
 
 HTTP_RESPONSE=$(curl -s -w "\n%{http_code}" --max-time "$TIMEOUT" \

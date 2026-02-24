@@ -36,9 +36,9 @@
     <div class="container">
       <h1>Claude Code + Greenlight Setup Guide</h1>
 
-      <p>Claude Code's permission system keeps you in control of what the agent does. Greenlight extends it to your phone &mdash; permission requests arrive as push notifications, and you can approve, deny, or create always-allow rules from anywhere.</p>
+      <p>Claude Code's permission system keeps you in control of what the agent does. Greenlight extends it to your phone &mdash; approve actions, stream activity, and send input to Claude from anywhere.</p>
 
-      <p>This guide covers installation, configuration, and how to get the most out of the rules system.</p>
+      <p>Setup has two parts: <strong>greenlight-cli</strong> connects Claude Code to your phone with a relay so you can send input to Claude from your phone, and a <strong>hook script</strong> handles permission forwarding and activity streaming.</p>
 
       <h2>What You'll Need</h2>
       <ul>
@@ -52,17 +52,39 @@ curl --version</code></pre>
       <p>If either is missing: <code>brew install jq</code> on macOS, or <code>apt install jq</code> on Ubuntu/Debian.</p>
 
       <h2>Step 1: Get Your Device ID</h2>
-      <p>Open Greenlight on your phone and go to the <strong>About</strong> tab. Tap your Device ID to copy it to the clipboard. You'll paste this into the hook configuration next.</p>
+      <p>Open Greenlight on your phone and go to the <strong>About</strong> tab. Tap your Device ID to copy it to the clipboard.</p>
 
-      <h2>Step 2: Install the Hook Script</h2>
+      <h2>Step 2: Install greenlight-cli</h2>
+      <p>Download the latest binary for your platform from <a href="https://github.com/GetGreenlight/greenlight-cli/releases">GitHub releases</a> and add it to your PATH.</p>
+
+      <p>Configure your device ID (you only need to do this once):</p>
+      <pre><code>mkdir -p ~/.greenlight
+echo 'device_id = YOUR_DEVICE_ID' > ~/.greenlight/config</code></pre>
+      <p>You can also pass <code>--device-id</code> as a flag or set the <code>GREENLIGHT_DEVICE_ID</code> environment variable.</p>
+
+      <h3>What greenlight-cli does</h3>
+      <p>greenlight-cli wraps Claude Code in a terminal relay that connects to your phone. It handles session enrollment automatically and enables relay input &mdash; type text into Claude's session from your phone (Greenlight Pro).</p>
+
+      <h2>Step 3: Install the Hook Script</h2>
       <pre><code>curl -o ~/greenlight-hook.sh https://getgreenlight.github.io/greenlight-hook.sh
 chmod +x ~/greenlight-hook.sh</code></pre>
-      <p>This is a shell script that Claude Code calls whenever it needs permission. It forwards the request to Greenlight's relay server and waits for your response.</p>
+      <p>The hook script forwards permission requests to your phone and streams activity. It works alongside greenlight-cli &mdash; the CLI exports the session variables that the hook needs automatically.</p>
 
-      <h2>Step 3: Configure Claude Code</h2>
-      <p>Add a hook to your <strong>per-project</strong> settings file. Create or edit <code>.claude/settings.local.json</code> in your project root:</p>
+      <h2>Step 4: Configure Claude Code</h2>
+      <p>Add hooks to your <strong>per-project</strong> settings file. Create or edit <code>.claude/settings.local.json</code> in your project root:</p>
       <pre><code>{
   "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/greenlight-hook.sh --device-id YOUR_DEVICE_ID --project myproject"
+          }
+        ]
+      }
+    ],
     "PermissionRequest": [
       {
         "matcher": "",
@@ -100,6 +122,34 @@ chmod +x ~/greenlight-hook.sh</code></pre>
 }</code></pre>
       <p>Replace <code>YOUR_DEVICE_ID</code> with the ID from the app. Replace <code>myproject</code> with whatever you want the project badge to say in the app.</p>
 
+      <h3>What the hooks do</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Hook</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>SessionStart</code></td>
+            <td>Registers the session and project with your phone immediately on startup.</td>
+          </tr>
+          <tr>
+            <td><code>PermissionRequest</code></td>
+            <td>Forwards permission requests to your phone and waits for your response. Required.</td>
+          </tr>
+          <tr>
+            <td><code>Notification</code></td>
+            <td>Sends a push notification when Claude is idle and waiting for your next prompt.</td>
+          </tr>
+          <tr>
+            <td><code>UserPromptSubmit</code></td>
+            <td>Starts the activity streamer so you can watch Claude work in real time (Greenlight Pro).</td>
+          </tr>
+        </tbody>
+      </table>
+
       <h3>What the flags do</h3>
       <table>
         <thead>
@@ -120,19 +170,16 @@ chmod +x ~/greenlight-hook.sh</code></pre>
         </tbody>
       </table>
 
-      <h3>The Notification hook</h3>
-      <p>The <code>Notification</code> hook with <code>idle_prompt</code> matcher sends a push notification when Claude has finished and is waiting for your next prompt. Optional but useful if you're away from the terminal.</p>
-
-      <h3>The UserPromptSubmit hook</h3>
-      <p>The <code>UserPromptSubmit</code> hook starts the activity streamer as soon as you submit a prompt, so you can watch Claude work in real time from your phone (Greenlight Pro). Without it, streaming starts on the first permission request instead.</p>
-
-      <h3>Session enrollment</h3>
-      <p>The first time the hook runs for a new Claude Code session, it registers the session with your phone. You'll see an enrollment prompt in the app &mdash; tap <strong>Allow</strong> to approve it. Once enrolled, that session can send requests and stream activity. You can delete old sessions from the Activity tab.</p>
-
       <h3>Global vs. per-project</h3>
       <p><strong>Do not</strong> add the hook to your global config (<code>~/.claude/settings.json</code>). Claude Code merges global and project settings, so you'd get duplicate requests. Keep it per-project.</p>
 
-      <h2>Step 4: Test It</h2>
+      <h2>Step 5: Launch with greenlight-cli</h2>
+      <pre><code>greenlight connect</code></pre>
+      <p>This starts Claude Code wrapped in the relay. The first time, you'll see a session enrollment prompt on your phone &mdash; tap <strong>Allow</strong> to approve it.</p>
+      <p>To resume a previous session:</p>
+      <pre><code>greenlight connect --resume SESSION_ID</code></pre>
+
+      <h2>Step 6: Test It</h2>
       <pre><code>claude "list files in /etc"</code></pre>
       <p>You should see a request appear on your phone. Tap <strong>Allow</strong> and Claude will continue. If you tap <strong>Always Allow</strong>, a rule is created and Claude won't ask again for that class of command in this project.</p>
 
@@ -163,6 +210,17 @@ chmod +x ~/greenlight-hook.sh</code></pre>
         <li><strong>AskUserQuestion</strong> &mdash; renders as radio buttons (single-select) or checkboxes (multi-select) with an "Other" free-text option, right on your phone.</li>
         <li><strong>ExitPlanMode</strong> &mdash; shows Claude's plan with full markdown rendering (headers, bullets, code blocks) and the allowed actions.</li>
       </ul>
+
+      <h2>Relay Input: Talk to Claude from Your Phone</h2>
+      <p>When you launch Claude Code with <code>greenlight connect</code>, the Activity tab in the app shows an input bar at the bottom. Anything you type is sent directly to the Claude Code session as if you typed it at the terminal.</p>
+      <p>Use this to:</p>
+      <ul>
+        <li>Answer prompts when Claude asks a question</li>
+        <li>Provide additional context or instructions mid-session</li>
+        <li>Nudge Claude in a different direction</li>
+        <li>Respond to interactive dialogs</li>
+      </ul>
+      <p>Relay input requires Greenlight Pro and a session started with <code>greenlight connect</code>. It does not work with the hook script alone.</p>
 
       <h2>Tips</h2>
       <ul>
