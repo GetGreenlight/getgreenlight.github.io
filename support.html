@@ -35,20 +35,8 @@
     <div class="container">
       <h1>Support & Setup Guide</h1>
 
-      <h2>Updating the Hook Script</h2>
-      <p>If you already have Greenlight set up, re-run the install command to get the latest hook script with session registration and automatic activity streaming:</p>
-      <pre><code>curl -o ~/greenlight-hook.sh https://getgreenlight.github.io/greenlight-hook.sh
-chmod +x ~/greenlight-hook.sh</code></pre>
-      <p>The new hook no longer needs the <code>--activity</code> flag &mdash; streaming is automatic. You can remove it from your hooks config. The <code>--project</code> flag is now required.</p>
-
       <h2>Getting Started</h2>
       <p>For a detailed walkthrough including how the rules system works, see the <a href="guide-claude-code.html">Claude Code setup guide</a>.</p>
-
-      <h3>Prerequisites</h3>
-      <p>The hook script requires <code>jq</code> and <code>curl</code> on your machine. These are pre-installed on most macOS and Linux systems. To check:</p>
-      <pre><code>jq --version
-curl --version</code></pre>
-      <p>If either is missing, install via your package manager (e.g., <code>brew install jq</code> on macOS, <code>apt install jq</code> on Ubuntu/Debian).</p>
 
       <h3>1. Install the App</h3>
       <p>Download Greenlight from the App Store and open it. The app will automatically generate a unique device ID and connect to the relay server.</p>
@@ -62,78 +50,16 @@ curl --version</code></pre>
       <pre><code>mkdir -p ~/.greenlight
 echo 'device_id = YOUR_DEVICE_ID' > ~/.greenlight/config</code></pre>
       <p>You can also pass <code>--device-id</code> as a flag or set the <code>GREENLIGHT_DEVICE_ID</code> environment variable.</p>
-      <p>greenlight-cli wraps Claude Code in a terminal relay that connects to your phone, enabling relay input &mdash; send text to Claude from your phone. Greenlight Pro.</p>
 
-      <h3>4. Install the Hook Script</h3>
-      <p>Download the hook script and place it somewhere on your machine:</p>
-      <pre><code>curl -o ~/greenlight-hook.sh https://getgreenlight.github.io/greenlight-hook.sh
-chmod +x ~/greenlight-hook.sh</code></pre>
-      <p>The hook script handles permission forwarding and activity streaming. It works alongside greenlight-cli &mdash; the CLI exports the session variables that the hook needs automatically.</p>
-
-      <h3>5. Configure Claude Code</h3>
-      <p>Add hooks to your Claude Code <strong>per-project</strong> settings file (<code>.claude/settings.local.json</code> in your project root):</p>
-      <pre><code>{
-  "hooks": {
-    "SessionStart": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/greenlight-hook.sh --device-id YOUR_DEVICE_ID --project myproject"
-          }
-        ]
-      }
-    ],
-    "PermissionRequest": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/greenlight-hook.sh --device-id YOUR_DEVICE_ID --project myproject"
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "matcher": "idle_prompt",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/greenlight-hook.sh --device-id YOUR_DEVICE_ID --project myproject"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/greenlight-hook.sh --device-id YOUR_DEVICE_ID --project myproject"
-          }
-        ]
-      }
-    ]
-  }
-}</code></pre>
-      <p>Replace <code>YOUR_DEVICE_ID</code> with the device ID from the app, and <code>myproject</code> with your project's name. The <code>--project</code> flag is required &mdash; it names the project in the app and scopes rules per-project.</p>
-      <p>The <code>SessionStart</code> hook registers the session with your phone immediately on startup. The <code>Notification</code> hook sends a push notification when Claude is idle and waiting for input. The <code>UserPromptSubmit</code> hook starts the activity streamer so you can watch Claude work in real time (Greenlight Pro). All are optional but recommended.</p>
-      <p><strong>Important:</strong> Do not add the hook to your global configuration (<code>~/.claude/settings.json</code>). Claude Code merges global and project settings, so having the hook in both places will send two requests for every action.</p>
-
-      <h3>6. Launch with greenlight-cli</h3>
-      <pre><code>greenlight connect</code></pre>
-      <p>This starts Claude Code wrapped in the relay. The first time, you'll see a session enrollment prompt on your phone &mdash; tap <strong>Allow</strong> to approve it.</p>
+      <h3>4. Launch</h3>
+      <pre><code>cd your-project
+greenlight connect --project myproject</code></pre>
+      <p>greenlight-cli wraps Claude Code in a terminal relay and automatically installs the Claude Code hooks needed for permission forwarding and activity streaming. The first time, you'll see a session enrollment prompt on your phone &mdash; tap <strong>Allow</strong>.</p>
       <p>To resume a previous session:</p>
-      <pre><code>greenlight connect --resume SESSION_ID</code></pre>
+      <pre><code>greenlight connect --project myproject --resume SESSION_ID</code></pre>
 
-      <h3>7. Test It</h3>
-      <p>Ask Claude to do something that requires permission:</p>
-      <pre><code>claude "list files in /etc"</code></pre>
-      <p>You should see a request appear in the app!</p>
+      <h3>5. Test It</h3>
+      <p>Ask Claude to do something that requires permission, like writing a file. You should see a request appear in the app.</p>
 
       <h2>Windsurf (Cascade) Setup</h2>
       <p>Greenlight also supports <a href="https://windsurf.com">Windsurf</a> via its Cascade Hooks system. For a more detailed walkthrough, see the <a href="guide-windsurf.html">Windsurf setup guide</a>.</p>
@@ -187,6 +113,11 @@ chmod +x ~/greenlight-windsurf.sh</code></pre>
             <td>Config file or env var</td>
           </tr>
           <tr>
+            <td><code>--project NAME</code></td>
+            <td>Project name shown in the app. Rules are scoped per-project.</td>
+            <td>Required</td>
+          </tr>
+          <tr>
             <td><code>--resume SESSION_ID</code></td>
             <td>Resume a previous session instead of starting a new one</td>
             <td>&mdash;</td>
@@ -194,30 +125,6 @@ chmod +x ~/greenlight-windsurf.sh</code></pre>
         </tbody>
       </table>
       <p>Configuration priority: command-line flag &gt; environment variable (<code>GREENLIGHT_DEVICE_ID</code>) &gt; config file (<code>~/.greenlight/config</code>).</p>
-
-      <h2>Hook Script Options</h2>
-      <p>Both hook scripts support the same options:</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Option</th>
-            <th>Description</th>
-            <th>Default</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><code>--device-id ID</code></td>
-            <td>Your device ID from the app</td>
-            <td>Required</td>
-          </tr>
-          <tr>
-            <td><code>--project NAME</code></td>
-            <td>Project name shown in the app. Rules are scoped per-project.</td>
-            <td>Required</td>
-          </tr>
-        </tbody>
-      </table>
 
       <h2>Using the App</h2>
 
@@ -241,27 +148,26 @@ chmod +x ~/greenlight-windsurf.sh</code></pre>
       <h3>Notifications</h3>
       <p>Greenlight uses Time Sensitive notifications that can break through Focus modes. Make sure notifications are enabled in <strong>Settings &rarr; Greenlight &rarr; Notifications</strong> and that Time Sensitive notifications are allowed in your Focus mode settings.</p>
 
-      <h2>Troubleshooting</h2>
+      <h2 id="troubleshooting">Troubleshooting</h2>
 
       <h3>Not receiving requests</h3>
       <ul>
         <li>Check the <strong>About</strong> tab &mdash; the status should show "Connected" with a green dot.</li>
-        <li>Verify your device ID in the hook config matches the one shown in the app.</li>
-        <li>Make sure the hook script is executable (<code>chmod +x</code>).</li>
+        <li>Verify your device ID in <code>~/.greenlight/config</code> matches the one shown in the app.</li>
+        <li>Make sure you launched Claude Code with <code>greenlight connect</code>.</li>
       </ul>
 
       <h3>Session not appearing on phone</h3>
       <ul>
         <li>Verify the device ID in your <code>~/.greenlight/config</code> matches the one in the app's <strong>About</strong> tab.</li>
         <li>Check the phone's connection status &mdash; the <strong>About</strong> tab should show a green "Connected" dot.</li>
-        <li>Make sure both greenlight-cli and the hook script are pointing to the same server.</li>
-        <li>If using the <code>SessionStart</code> hook, the session should appear immediately. Without it, the session appears on the first permission request.</li>
+        <li>The session should appear immediately when you run <code>greenlight connect</code>. If it doesn't, check the greenlight log file for errors.</li>
       </ul>
 
-      <h3>Relay input not working</h3>
+      <h3>Talk to Claude not working</h3>
       <ul>
-        <li>Relay input requires a Greenlight Pro subscription.</li>
-        <li>You must launch Claude Code with <code>greenlight connect</code> &mdash; relay input does not work with the hook script alone.</li>
+        <li>Talk to Claude requires a Greenlight Pro subscription.</li>
+        <li>You must launch Claude Code with <code>greenlight connect</code>.</li>
         <li>Check that the Activity tab shows an input bar at the bottom when viewing the session.</li>
       </ul>
 
@@ -274,7 +180,7 @@ chmod +x ~/greenlight-windsurf.sh</code></pre>
 
       <h3>Requests timing out</h3>
       <ul>
-        <li>The default timeout is 590 seconds (just under Claude Code's 600 second hook limit). You can adjust it with <code>--timeout SECONDS</code> in the hook config.</li>
+        <li>The default timeout is 590 seconds (just under Claude Code's 600 second hook limit).</li>
         <li>If the app is not connected and push notifications fail, the request will time out and be denied.</li>
       </ul>
 
