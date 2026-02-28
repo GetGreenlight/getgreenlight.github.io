@@ -42,18 +42,20 @@
       <ul>
         <li><a href="https://docs.anthropic.com/en/docs/claude-code">Claude Code</a> installed and working</li>
         <li>An iPhone with <a href="https://apps.apple.com/us/app/greenlight-ai/id6758998897">Greenlight</a> installed</li>
-        <li>macOS or Linux (greenlight-cli is a native binary)</li>
+        <li>macOS or Linux</li>
       </ul>
 
       <h2>Step 1: Get Your Device ID</h2>
       <p>Open Greenlight on your phone and go to the <strong>About</strong> tab. Tap your Device ID to copy it to the clipboard.</p>
 
       <h2>Step 2: Install greenlight-cli</h2>
-      <p>Download the latest binary for your platform from <a href="https://github.com/GetGreenlight/greenlight-cli/releases">GitHub releases</a> and add it to your PATH.</p>
+      <p>Run the install script (requires Go 1.19+):</p>
+      <pre><code>curl -sSL https://aigreenlight.app/install.sh | bash</code></pre>
+      <p>This clones the repo, builds from source, and installs the binary to <code>/usr/local/bin</code>.</p>
+      <p>Alternatively, unsigned pre-built binaries are available from <a href="https://github.com/GetGreenlight/greenlight-cli/releases">GitHub releases</a> (see that page for macOS Gatekeeper instructions).</p>
 
-      <p>Configure your device ID (you only need to do this once):</p>
-      <pre><code>mkdir -p ~/.greenlight
-echo 'device_id = YOUR_DEVICE_ID' > ~/.greenlight/config</code></pre>
+      <p>Register your device ID (you only need to do this once):</p>
+      <pre><code>greenlight register YOUR_DEVICE_ID</code></pre>
       <p>You can also pass <code>--device-id</code> as a flag or set the <code>GREENLIGHT_DEVICE_ID</code> environment variable.</p>
 
       <h2>Step 3: Launch</h2>
