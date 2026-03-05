@@ -44,10 +44,12 @@
       <p>Go to the <strong>About</strong> tab in the app and tap your Device ID to copy it to the clipboard. You'll need this for the next steps.</p>
 
       <h3>3. Install greenlight-cli</h3>
-      <p>Download the latest binary for your platform from <a href="https://github.com/GetGreenlight/greenlight-cli/releases">GitHub releases</a> and add it to your PATH.</p>
-      <p>Configure your device ID (you only need to do this once):</p>
-      <pre><code>mkdir -p ~/.greenlight
-echo 'device_id = YOUR_DEVICE_ID' > ~/.greenlight/config</code></pre>
+      <p>Run the install script (requires Go 1.19+):</p>
+      <pre><code>curl -sSL https://aigreenlight.app/install.sh | bash</code></pre>
+      <p>This clones the repo, builds from source, and installs the binary to <code>/usr/local/bin</code>.</p>
+      <p>Alternatively, unsigned pre-built binaries are available from <a href="https://github.com/GetGreenlight/greenlight-cli/releases">GitHub releases</a> (see that page for macOS Gatekeeper instructions).</p>
+      <p>Register your device ID (you only need to do this once):</p>
+      <pre><code>greenlight register YOUR_DEVICE_ID</code></pre>
       <p>You can also pass <code>--device-id</code> as a flag or set the <code>GREENLIGHT_DEVICE_ID</code> environment variable.</p>
 
       <h3>4. Launch</h3>
@@ -101,13 +103,31 @@ greenlight connect --project myproject</code></pre>
         <li><strong>Deny & Stop</strong> — Denies and sends a halt signal to stop the agent entirely.</li>
       </ul>
 
-      <h3>Managing Rules</h3>
-      <p>The <strong>Grants</strong> tab shows all your "Always Allow" rules grouped by project. Swipe left on any rule to delete it. Rules use pattern matching:</p>
+      <h3>How Rules Work</h3>
+      <p>Tapping "Always Allow" generates a pattern that auto-approves future matching commands without interrupting you.</p>
+      <p>Patterns are <strong>subcommand-aware</strong>. The system knows that <code>git push</code> and <code>git status</code> are different operations:</p>
       <ul>
-        <li>Regular commands get wildcard patterns (e.g., <code>Bash(go build **)</code>)</li>
-        <li>Destructive commands like <code>rm</code> use exact matching for safety</li>
-        <li>File tools match on the directory (e.g., <code>Read(/home/user/src/**)</code>)</li>
+        <li><code>go build ./cmd/foo</code> &rarr; pattern <code>Bash(go build **)</code> &mdash; matches any <code>go build</code></li>
+        <li><code>git push origin main</code> &rarr; pattern <code>Bash(git push **)</code> &mdash; matches any <code>git push</code>, but not <code>git reset</code></li>
+        <li><code>aws s3 cp file.txt s3://bucket/</code> &rarr; pattern <code>Bash(aws s3 cp **)</code> &mdash; three-word prefix for AWS/GCloud</li>
       </ul>
+      <p>Commands like <code>rm</code>, <code>sudo</code>, <code>kill</code>, and <code>chmod</code> use <strong>exact matching</strong>. Granting <code>rm -rf /tmp/coverage</code> creates a rule that matches only that exact string &mdash; not <code>rm -rf /home</code>.</p>
+      <p>For compound commands like <code>git add . && git commit -m "msg" && git push</code>, the system splits into segments and generates a separate pattern for each. All segments must have matching rules for auto-approval. Each segment is color-coded by risk (green/orange/red) and segments already covered by rules show a checkmark overlay.</p>
+      <p>For <code>Read</code>, <code>Write</code>, and <code>Edit</code> tools, patterns match on the directory (e.g., <code>Edit(/home/user/project/src/**)</code>).</p>
+
+      <h3>Managing Rules</h3>
+      <p>The <strong>Grants</strong> tab shows all your "Always Allow" rules grouped by project. Swipe left on any rule to delete it.</p>
+
+      <h3>Interactive Prompts</h3>
+      <p>Greenlight handles Claude Code's interactive features too:</p>
+      <ul>
+        <li><strong>AskUserQuestion</strong> &mdash; renders as radio buttons (single-select) or checkboxes (multi-select) with an "Other" free-text option, right on your phone.</li>
+        <li><strong>ExitPlanMode</strong> &mdash; shows Claude's plan with full markdown rendering (headers, bullets, code blocks) and the allowed actions.</li>
+      </ul>
+
+      <h3>Talk to Claude from Your Phone</h3>
+      <p>The Activity tab shows an input bar at the bottom. Anything you type is sent directly to the Claude Code session as if you typed it at the terminal. Use this to answer prompts, provide additional context, or nudge Claude in a different direction.</p>
+      <p>Talk to Claude requires Greenlight Pro. Pro also includes push notifications so you never miss a request.</p>
 
       <h3>Notifications</h3>
       <p>Greenlight uses Time Sensitive notifications that can break through Focus modes. Make sure notifications are enabled in <strong>Settings &rarr; Greenlight &rarr; Notifications</strong> and that Time Sensitive notifications are allowed in your Focus mode settings.</p>
