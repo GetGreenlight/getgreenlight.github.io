@@ -26,7 +26,6 @@
       <div class="nav-links">
         <a href="/">Home</a>
         <a href="guide-claude-code.html">Claude Code Guide</a>
-        <a href="guide-windsurf.html">Windsurf Guide</a>
       </div>
     </div>
   </nav>
@@ -61,41 +60,6 @@ greenlight connect --project myproject</code></pre>
       <h3>5. Test It</h3>
       <p>Ask Claude to do something that requires permission, like writing a file. You should see a request appear in the app.</p>
 
-      <h2>Windsurf (Cascade) Setup</h2>
-      <p>Greenlight also supports <a href="https://windsurf.com">Windsurf</a> via its Cascade Hooks system. For a more detailed walkthrough, see the <a href="guide-windsurf.html">Windsurf setup guide</a>.</p>
-
-      <h3>1. Install the Windsurf Hook Script</h3>
-      <p>Download the Windsurf-specific hook script:</p>
-      <pre><code>curl -o ~/greenlight-windsurf.sh https://getgreenlight.github.io/greenlight-windsurf.sh
-chmod +x ~/greenlight-windsurf.sh</code></pre>
-
-      <h3>2. Configure Windsurf Hooks</h3>
-      <p>Create or edit the hooks configuration file at <code>~/.codeium/windsurf/hooks.json</code>:</p>
-      <pre><code>{
-  "hooks": {
-    "pre_run_command": [{
-      "command": "~/greenlight-windsurf.sh --device-id YOUR_DEVICE_ID",
-      "show_output": true
-    }],
-    "pre_write_code": [{
-      "command": "~/greenlight-windsurf.sh --device-id YOUR_DEVICE_ID",
-      "show_output": true
-    }],
-    "pre_read_code": [{
-      "command": "~/greenlight-windsurf.sh --device-id YOUR_DEVICE_ID",
-      "show_output": true
-    }],
-    "pre_mcp_tool_use": [{
-      "command": "~/greenlight-windsurf.sh --device-id YOUR_DEVICE_ID",
-      "show_output": true
-    }]
-  }
-}</code></pre>
-      <p>Replace <code>YOUR_DEVICE_ID</code> with the device ID from the app. The project name is detected automatically from the working directory or git repository root.</p>
-      <p>You can also place a <code>.windsurf/hooks.json</code> file in a project directory for per-project configuration.</p>
-
-      <h3>3. Test It</h3>
-      <p>Open a project in Windsurf, start a Cascade session, and ask it to run a command or edit a file. You should see the request appear in the app with a <strong>windsurf</strong> badge.</p>
 
       <h2>greenlight-cli Options</h2>
       <table>
