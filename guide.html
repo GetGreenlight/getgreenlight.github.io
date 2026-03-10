@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Setup Guide - Greenlight</title>
+  <meta name="description" content="Set up Greenlight with your AI coding agent. Approve permission requests from your iPhone with push notifications, smart rules, and risk-annotated commands. Works with Claude Code, Copilot CLI, Cursor CLI, and Codex CLI.">
+  <meta name="keywords" content="Claude Code, Copilot CLI, Cursor CLI, Codex CLI, AI agent approval, AI agent permissions, remote approval, Greenlight">
+  <link rel="icon" type="image/png" href="greenlight-logo-1024.png">
+  <link rel="stylesheet" href="style.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-5W4B1J7E1F"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-5W4B1J7E1F');
+  </script>
+</head>
+<body>
+  <nav>
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="greenlight-logo-1024.png" alt="Greenlight logo">
+        Greenlight
+      </a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="support.html">Support</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="docs">
+    <div class="container">
+      <h1>Greenlight Setup Guide</h1>
+
+      <p>Greenlight is mission control for your AI coding agents. It launches your agent in yolo mode so it never blocks on a terminal prompt. Greenlight's permission engine intercepts all reads, writes, network IO, and shell commands &mdash; routing them to your phone for approval. Smart rules auto-approve trusted actions so your agents keep working. When something needs your attention, you handle it from anywhere.</p>
+
+      <h2>Supported Agents</h2>
+      <ul>
+        <li><a href="https://docs.anthropic.com/en/docs/claude-code">Claude Code</a></li>
+        <li><a href="https://docs.github.com/en/copilot">GitHub Copilot CLI</a></li>
+        <li><a href="https://www.cursor.com">Cursor CLI</a></li>
+        <li><a href="https://openai.com/index/introducing-codex/">Codex CLI</a></li>
+      </ul>
+
+      <h2>What You'll Need</h2>
+      <ul>
+        <li>One of the supported agents installed and working</li>
+        <li>An iPhone with <a href="https://apps.apple.com/us/app/greenlight-ai/id6758998897">Greenlight</a> installed</li>
+        <li>macOS, Linux, or WSL2</li>
+      </ul>
+
+      <h2>Step 1: Get Your Device ID</h2>
+      <p>Open Greenlight on your phone and go to the <strong>About</strong> tab. Tap your Device ID to copy it to the clipboard.</p>
+
+      <h2>Step 2: Install greenlight-cli</h2>
+      <pre><code>curl -sSL https://aigreenlight.app/install.sh | bash</code></pre>
+      <p>This downloads the latest binary for your system and installs it to <code>/usr/local/bin</code>.</p>
+
+      <p>Register your device ID (you only need to do this once):</p>
+      <pre><code>greenlight register YOUR_DEVICE_ID</code></pre>
+      <p>You can also pass <code>--device-id</code> as a flag or set the <code>GREENLIGHT_DEVICE_ID</code> environment variable.</p>
+
+      <h2>Step 3: Set Your Default Agent</h2>
+      <p>Tell Greenlight which agent you want to use:</p>
+      <pre><code>greenlight agent claude</code></pre>
+      <p>Supported values: <code>claude</code>, <code>copilot</code>, <code>cursor</code>, <code>codex</code>. You only need to do this once &mdash; the setting is saved to your config.</p>
+
+      <h2>Step 4: Launch</h2>
+      <pre><code>cd your-project
+greenlight connect --project myproject</code></pre>
+      <p>That's it. greenlight-cli handles everything automatically:</p>
+      <ul>
+        <li>Launches your agent in yolo mode so it never blocks on a terminal prompt</li>
+        <li>Greenlight's libhook permission engine intercepts all reads, writes, network IO, and shell commands</li>
+        <li>Enrolls the session with your phone (tap <strong>Allow</strong> on the first prompt)</li>
+        <li>Streams activity to your phone in real time</li>
+      </ul>
+      <p>To resume a previous session:</p>
+      <pre><code>greenlight connect --project myproject --resume SESSION_ID</code></pre>
+
+      <h2>Step 5: Test It</h2>
+      <p>Ask your agent to do something that requires permission, like writing a file:</p>
+      <pre><code>echo "test" > /tmp/greenlight-test.txt</code></pre>
+      <p>You should see a request appear on your phone. Tap <strong>Allow</strong> and the agent will continue. If you tap <strong>Always Allow</strong>, a rule is created and the agent won't ask again for that class of command in this project.</p>
+
+      <h2>How the Rules Work</h2>
+      <p>Rules are the core of the system. Tapping "Always Allow" doesn't just approve the request &mdash; it generates a pattern that auto-approves future matching commands without interrupting you.</p>
+
+      <h3>Pattern generation</h3>
+      <p>Patterns are <strong>subcommand-aware</strong>. The system knows that <code>git push</code> and <code>git status</code> are different operations:</p>
+      <ul>
+        <li><code>go build ./cmd/foo</code> &rarr; pattern <code>Bash(go build **)</code> &mdash; matches any <code>go build</code></li>
+        <li><code>git push origin main</code> &rarr; pattern <code>Bash(git push **)</code> &mdash; matches any <code>git push</code>, but not <code>git reset</code></li>
+        <li><code>aws s3 cp file.txt s3://bucket/</code> &rarr; pattern <code>Bash(aws s3 cp **)</code> &mdash; three-word prefix for AWS/GCloud</li>
+      </ul>
+
+      <h3>Destructive command safety</h3>
+      <p>Commands like <code>rm</code>, <code>sudo</code>, <code>kill</code>, and <code>chmod</code> use <strong>exact matching</strong>. Granting <code>rm -rf /tmp/coverage</code> creates a rule that matches only that exact string &mdash; not <code>rm -rf /home</code>, not <code>rm -rf /tmp/coverage /etc</code>.</p>
+
+      <h3>Compound commands</h3>
+      <p>When the agent runs <code>git add . && git commit -m "msg" && git push</code>, the system splits it into three segments and generates a separate pattern for each. All segments must have matching rules for the compound command to auto-approve. If you've granted <code>git add</code> and <code>git commit</code> but not <code>git push</code>, the compound command still comes to your phone.</p>
+      <p>In the app, each segment is color-coded by risk (green/orange/red) and segments already covered by rules show a checkmark overlay &mdash; so you can see at a glance which part of the command is the one that needs your attention.</p>
+
+      <h3>File operations</h3>
+      <p>For <code>Read</code>, <code>Write</code>, and <code>Edit</code> tools, patterns match on the directory. Granting an edit to <code>/home/user/project/src/main.go</code> creates the pattern <code>Edit(/home/user/project/src/**)</code>, which covers future edits in that directory.</p>
+
+      <h2>Talk to Your Agent from Your Phone</h2>
+      <p>The Activity tab in the app shows an input bar at the bottom. Anything you type is sent directly to your agent session as if you typed it at the terminal.</p>
+      <p>Use this to:</p>
+      <ul>
+        <li>Answer prompts when your agent asks a question</li>
+        <li>Provide additional context or instructions mid-session</li>
+        <li>Nudge the agent in a different direction</li>
+        <li>Respond to interactive dialogs</li>
+      </ul>
+      <p>Talk to Your Agent requires Greenlight Pro. Pro also includes push notifications so you never miss a request.</p>
+
+      <h2>Tips</h2>
+      <ul>
+        <li>The first few sessions generate the most requests. Once you've built up rules for your common patterns, interruptions drop off quickly.</li>
+        <li>Check the <strong>Grants</strong> tab to see your rules grouped by project. Swipe left to delete any rule.</li>
+        <li>If you're in a Focus mode on iOS, make sure Time Sensitive notifications are allowed for Greenlight &mdash; permission requests use this priority.</li>
+      </ul>
+
+      <h2>Troubleshooting</h2>
+      <p>See the <a href="support.html#troubleshooting">troubleshooting section</a> of the support page for common issues.</p>
+
+      <h2>Questions?</h2>
+      <p>Email <a href="mailto:support@aigreenlight.app">support@aigreenlight.app</a>.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="support.html">Support</a>
+        <a href="mailto:support@aigreenlight.app">Contact</a>
+      </div>
+      <p class="copyright">&copy; 2025-2026 David Farrell. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -113,6 +113,12 @@ nav .nav-links a:hover {
   font-size: 1.25rem;
   color: var(--text-muted);
   max-width: 520px;
+  margin: 0 auto 16px;
+}
+
+.hero .supported-agents {
+  font-size: 1.05rem;
+  color: var(--green);
   margin: 0 auto 40px;
 }
 

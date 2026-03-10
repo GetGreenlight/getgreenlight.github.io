@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Greenlight - Remote Approval for AI Coding Agents</title>
-  <meta name="description" content="Watch your AI coding agent work in real time and approve actions from your iPhone. Live activity streaming, push notifications, and smart rules for Claude Code.">
+  <title>Greenlight - Mission Control for AI Coding Agents</title>
+  <meta name="description" content="Mission control for AI coding agents. Smart rules, live activity streaming, push notifications, and multi-agent management for Claude Code, Copilot CLI, Cursor CLI, and Codex CLI.">
   <link rel="icon" type="image/png" href="greenlight-logo-1024.png">
   <link rel="stylesheet" href="style.css">
   <!-- Google tag (gtag.js) -->
@@ -26,7 +26,7 @@
       <div class="nav-links">
         <a href="#how-it-works">How It Works</a>
         <a href="#features">Features</a>
-        <a href="guide-claude-code.html">Claude Code Guide</a>
+        <a href="guide.html">Setup Guide</a>
         <a href="support.html">Support</a>
       </div>
     </div>
@@ -35,8 +35,9 @@
   <header class="hero">
     <div class="container">
       <img src="greenlight-logo-1024.png" alt="Greenlight" class="hero-logo">
-      <h1>AI agents, on your terms</h1>
-      <p class="tagline">Watch Claude Code work and talk back to it from your iPhone. Approve actions, send input, build trust rules, and stay in control — anywhere.</p>
+      <h1>Mission control for AI agents</h1>
+      <p class="tagline">Your agents never block again. Smart rules auto-approve trusted actions. When something needs your attention, you handle it from your phone — and the agent keeps working.</p>
+      <p class="supported-agents">Works with Claude Code, GitHub Copilot CLI, Cursor CLI, and Codex CLI.</p>
       <video class="hero-video" autoplay loop muted playsinline>
         <source src="greenlight-activity-stream.mp4" type="video/mp4">
       </video>
@@ -60,22 +61,22 @@
         <div class="step">
           <div class="step-number">1</div>
           <div class="step-content">
-            <h3>Connect with greenlight-cli</h3>
-            <p><a href="guide-claude-code.html">Install greenlight-cli</a> and run <code>greenlight connect</code>. It wraps Claude Code with a relay that connects to your phone, enabling you to send text back to Claude from anywhere.</p>
+            <h3>Launch your agents</h3>
+            <p><a href="guide.html">Install greenlight-cli</a> and run <code>greenlight connect</code>. Your agent launches in yolo mode so it never blocks on a terminal prompt. Greenlight's permission engine intercepts all reads, writes, network IO, and shell commands &mdash; forwarding them to your phone for approval.</p>
           </div>
         </div>
         <div class="step">
           <div class="step-number">2</div>
           <div class="step-content">
-            <h3>Watch, approve, and talk back</h3>
-            <p>Stream activity in real time. Approve or deny actions with push notifications. Send text to Claude from your phone when it needs input.</p>
+            <h3>Build rules, stop blocking</h3>
+            <p>Tap "Always Allow" and Greenlight generates smart rules that auto-approve matching actions. After a few sessions, most requests never reach you. Your agents just keep working.</p>
           </div>
         </div>
         <div class="step">
           <div class="step-number">3</div>
           <div class="step-content">
-            <h3>Build trust over time</h3>
-            <p>Create "always allow" rules as you work. Greenlight learns your patterns so trusted actions auto-approve while risky ones still need your attention.</p>
+            <h3>Manage everything from your phone</h3>
+            <p>Run multiple agents across projects. Stream activity, handle approvals, send input, and pull the plug &mdash; all from one place.</p>
           </div>
         </div>
       </div>
@@ -87,24 +88,28 @@
       <h2>Features</h2>
       <div class="features-grid">
         <div class="feature-card">
-          <h3>Talk to Claude</h3>
-          <p>Send text directly to your Claude Code session from your phone. Answer prompts, provide context, or nudge Claude in a new direction — no laptop needed. <em>Greenlight Pro.</em></p>
+          <h3>Smart Rules</h3>
+          <p>Set up rules once, your agents auto-approve trusted actions forever. Subcommand-aware patterns keep things safe &mdash; destructive commands use exact matching.</p>
         </div>
         <div class="feature-card">
-          <h3>Live Activity Stream</h3>
-          <p>Watch Claude Code work in real time from your phone. Every tool call, file edit, and decision streams through as it happens.</p>
-        </div>
-        <div class="feature-card">
-          <h3>Session Registration</h3>
-          <p>Each Claude Code session must be approved on your phone before it can send requests. You control which sessions reach you.</p>
+          <h3>Multi-Agent, Multi-Project</h3>
+          <p>Manage all your agents from one place. Run agents across projects simultaneously &mdash; each with its own rules and activity stream.</p>
         </div>
         <div class="feature-card">
           <h3>Push Notifications</h3>
-          <p>Get alerted even when the app is closed. Time Sensitive alerts break through Focus modes so you never miss a request. <em>Greenlight Pro.</em></p>
+          <p>Get notified when an agent needs you, even when the app is closed. Time Sensitive alerts break through Focus modes. <em>Greenlight Pro.</em></p>
         </div>
         <div class="feature-card">
-          <h3>Smart Rules</h3>
-          <p>Create "always allow" rules with auto-generated patterns. Destructive commands use exact matching for safety.</p>
+          <h3>Live Activity Stream</h3>
+          <p>See exactly what every agent is doing, across every project. Every tool call, file edit, and decision streams through in real time.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Talk to Your Agent</h3>
+          <p>Send text directly to any agent session from your phone. Answer prompts, provide context, or redirect &mdash; no laptop needed. <em>Greenlight Pro.</em></p>
+        </div>
+        <div class="feature-card">
+          <h3>Pull the Plug</h3>
+          <p>Remotely terminate any running agent, instantly. One tap from anywhere.</p>
         </div>
         <div class="feature-card">
           <h3>Command Risk Intelligence</h3>
@@ -115,17 +120,10 @@
           <p>See syntax-highlighted commands, file diffs, and tool-specific views before you approve.</p>
         </div>
         <div class="feature-card">
-          <h3>Multi-Project</h3>
-          <p>Project badges show which codebase a request is coming from. Rules are scoped per-project.</p>
+          <h3>Session Registration</h3>
+          <p>Every agent session must be approved on your phone before it can send requests. You control which sessions reach you.</p>
         </div>
-        <div class="feature-card">
-          <h3>Emergency Stop</h3>
-          <p>Deny and halt the agent entirely with a single tap. Regain control immediately.</p>
-        </div>
-        <div class="feature-card">
-          <h3>Interactive Questions</h3>
-          <p>Respond to agent questions with radio buttons, checkboxes, and free-text answers directly in the app.</p>
-        </div>
+
       </div>
     </div>
   </section>

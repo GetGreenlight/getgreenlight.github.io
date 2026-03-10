@@ -72,7 +72,7 @@ if [ -z "$PROJECT" ]; then
     "hookEventName": "PermissionRequest",
     "decision": {
       "behavior": "deny",
-      "message": "Greenlight hook is missing the --project flag. Add --project PROJECT_NAME to the hook command in .claude/settings.json hooks config. See https://getgreenlight.github.io/guide-claude-code.html"
+      "message": "Greenlight hook is missing the --project flag. Add --project PROJECT_NAME to the hook command in .claude/settings.json hooks config. See https://getgreenlight.github.io/guide.html"
     }
   }
 }

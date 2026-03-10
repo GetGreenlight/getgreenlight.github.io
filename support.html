@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Support & Setup - Greenlight</title>
-  <meta name="description" content="Get started with Greenlight. Installation instructions, setup guide, and support for remote AI agent approval.">
+  <meta name="description" content="Get started with Greenlight. Installation instructions, setup guide, and support for AI agent management.">
   <link rel="icon" type="image/png" href="greenlight-logo-1024.png">
   <link rel="stylesheet" href="style.css">
   <!-- Google tag (gtag.js) -->
@@ -25,7 +25,7 @@
       </a>
       <div class="nav-links">
         <a href="/">Home</a>
-        <a href="guide-claude-code.html">Claude Code Guide</a>
+        <a href="guide.html">Setup Guide</a>
       </div>
     </div>
   </nav>
@@ -35,7 +35,7 @@
       <h1>Support & Setup Guide</h1>
 
       <h2>Getting Started</h2>
-      <p>For a detailed walkthrough including how the rules system works, see the <a href="guide-claude-code.html">Claude Code setup guide</a>.</p>
+      <p>For a detailed walkthrough including how the rules system works, see the <a href="guide.html">setup guide</a>.</p>
 
       <h3>1. Install the App</h3>
       <p>Download Greenlight from the App Store and open it. The app will automatically generate a unique device ID and connect to the relay server.</p>
@@ -52,15 +52,19 @@
       <pre><code>greenlight register YOUR_DEVICE_ID</code></pre>
       <p>You can also pass <code>--device-id</code> as a flag or set the <code>GREENLIGHT_DEVICE_ID</code> environment variable.</p>
 
-      <h3>4. Launch</h3>
+      <h3>4. Set Your Default Agent</h3>
+      <pre><code>greenlight agent claude</code></pre>
+      <p>Supported values: <code>claude</code>, <code>copilot</code>, <code>cursor</code>, <code>codex</code>. You only need to do this once.</p>
+
+      <h3>5. Launch</h3>
       <pre><code>cd your-project
 greenlight connect --project myproject</code></pre>
-      <p>greenlight-cli wraps Claude Code in a terminal relay and automatically installs the Claude Code hooks needed for permission forwarding and activity streaming. The first time, you'll see a session enrollment prompt on your phone &mdash; tap <strong>Allow</strong>.</p>
+      <p>greenlight-cli launches your agent in yolo mode so it never blocks on a terminal prompt. Greenlight's libhook permission engine intercepts all reads, writes, network IO, and shell commands &mdash; forwarding them to your phone for approval. The first time, you'll see a session enrollment prompt on your phone &mdash; tap <strong>Allow</strong>.</p>
       <p>To resume a previous session:</p>
       <pre><code>greenlight connect --project myproject --resume SESSION_ID</code></pre>
 
-      <h3>5. Test It</h3>
-      <p>Ask Claude to do something that requires permission, like writing a file. You should see a request appear in the app.</p>
+      <h3>6. Test It</h3>
+      <p>Ask your agent to do something that requires permission, like writing a file. You should see a request appear in the app.</p>
 
 
       <h2>greenlight-cli Options</h2>
@@ -118,16 +122,9 @@ greenlight connect --project myproject</code></pre>
       <h3>Managing Rules</h3>
       <p>The <strong>Grants</strong> tab shows all your "Always Allow" rules grouped by project. Swipe left on any rule to delete it.</p>
 
-      <h3>Interactive Prompts</h3>
-      <p>Greenlight handles Claude Code's interactive features too:</p>
-      <ul>
-        <li><strong>AskUserQuestion</strong> &mdash; renders as radio buttons (single-select) or checkboxes (multi-select) with an "Other" free-text option, right on your phone.</li>
-        <li><strong>ExitPlanMode</strong> &mdash; shows Claude's plan with full markdown rendering (headers, bullets, code blocks) and the allowed actions.</li>
-      </ul>
-
-      <h3>Talk to Claude from Your Phone</h3>
-      <p>The Activity tab shows an input bar at the bottom. Anything you type is sent directly to the Claude Code session as if you typed it at the terminal. Use this to answer prompts, provide additional context, or nudge Claude in a different direction.</p>
-      <p>Talk to Claude requires Greenlight Pro. Pro also includes push notifications so you never miss a request.</p>
+      <h3>Talk to Your Agent from Your Phone</h3>
+      <p>The Activity tab shows an input bar at the bottom. Anything you type is sent directly to your agent session as if you typed it at the terminal. Use this to answer prompts, provide additional context, or nudge your agent in a different direction.</p>
+      <p>Talk to Your Agent requires Greenlight Pro. Pro also includes push notifications so you never miss a request.</p>
 
       <h3>Notifications</h3>
       <p>Greenlight uses Time Sensitive notifications that can break through Focus modes. Make sure notifications are enabled in <strong>Settings &rarr; Greenlight &rarr; Notifications</strong> and that Time Sensitive notifications are allowed in your Focus mode settings.</p>
@@ -138,7 +135,7 @@ greenlight connect --project myproject</code></pre>
       <ul>
         <li>Check the <strong>About</strong> tab &mdash; the status should show "Connected" with a green dot.</li>
         <li>Verify your device ID in <code>~/.greenlight/config</code> matches the one shown in the app.</li>
-        <li>Make sure you launched Claude Code with <code>greenlight connect</code>.</li>
+        <li>Make sure you launched your agent with <code>greenlight connect</code>.</li>
       </ul>
 
       <h3>Session not appearing on phone</h3>
@@ -148,10 +145,10 @@ greenlight connect --project myproject</code></pre>
         <li>The session should appear immediately when you run <code>greenlight connect</code>. If it doesn't, check the greenlight log file for errors.</li>
       </ul>
 
-      <h3>Talk to Claude not working</h3>
+      <h3>Talk to Your Agent not working</h3>
       <ul>
-        <li>Talk to Claude requires a Greenlight Pro subscription.</li>
-        <li>You must launch Claude Code with <code>greenlight connect</code>.</li>
+        <li>Talk to Your Agent requires a Greenlight Pro subscription.</li>
+        <li>You must launch your agent with <code>greenlight connect</code>.</li>
         <li>Check that the Activity tab shows an input bar at the bottom when viewing the session.</li>
       </ul>
 
@@ -164,7 +161,7 @@ greenlight connect --project myproject</code></pre>
 
       <h3>Requests timing out</h3>
       <ul>
-        <li>The default timeout is 590 seconds (just under Claude Code's 600 second hook limit).</li>
+        <li>The default timeout is 590 seconds.</li>
         <li>If the app is not connected and push notifications fail, the request will time out and be denied.</li>
       </ul>
 
