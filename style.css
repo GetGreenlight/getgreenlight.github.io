@@ -366,6 +366,37 @@ footer .copyright {
   padding: 16px;
   overflow-x: auto;
   margin-bottom: 16px;
+  position: relative;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--dark-border);
+  color: var(--text-muted);
+  border: none;
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, background 0.15s;
+}
+
+.docs pre:hover .copy-btn {
+  opacity: 1;
+}
+
+.copy-btn:hover {
+  background: var(--green);
+  color: #000;
+}
+
+.copy-btn.copied {
+  background: var(--green);
+  color: #000;
+  opacity: 1;
 }
 
 .docs pre code {
