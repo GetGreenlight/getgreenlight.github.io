@@ -136,6 +136,11 @@ nav .nav-links a:hover {
   gap: 16px;
   flex-wrap: wrap;
 }
+.video-caption {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+}
 
 .cta-button {
   display: inline-block;
@@ -367,12 +372,41 @@ footer .copyright {
 }
 
 .docs pre {
+  position: relative;
   background: var(--dark-card);
   border: 1px solid var(--dark-border);
   border-radius: 8px;
   padding: 16px;
   overflow-x: auto;
   margin-bottom: 16px;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--dark-border);
+  border: none;
+  border-radius: 6px;
+  padding: 6px;
+  cursor: pointer;
+  color: var(--text-muted);
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 0.15s, background 0.15s;
+}
+
+.docs pre:hover .copy-btn {
+  opacity: 1;
+}
+
+.copy-btn:hover {
+  background: #3a3a3a;
+  color: var(--text);
+}
+
+.copy-btn.copied {
+  color: var(--green);
 }
 
 .docs pre code {

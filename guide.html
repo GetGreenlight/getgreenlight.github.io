@@ -117,7 +117,7 @@ greenlight connect</code></pre>
         <li>Nudge the agent in a different direction</li>
         <li>Respond to interactive dialogs</li>
       </ul>
-      <p>Talk to Your Agent requires Greenlight Pro. Pro also includes push notifications so you never miss a request.</p>
+      <p>Greenlight Pro adds push notifications, voice input, Pull the Plug, and temporary grants.</p>
 
       <h2>Tips</h2>
       <ul>
@@ -133,6 +133,27 @@ greenlight connect</code></pre>
       <p>Email <a href="mailto:support@aigreenlight.app">support@aigreenlight.app</a>.</p>
     </div>
   </div>
+
+  <script>
+    document.querySelectorAll('.docs pre').forEach(function(pre) {
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.title = 'Copy to clipboard';
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5"/><path d="M10.5 5.5V3a1.5 1.5 0 0 0-1.5-1.5H3A1.5 1.5 0 0 0 1.5 3v6A1.5 1.5 0 0 0 3 10.5h2.5"/></svg>';
+      btn.addEventListener('click', function() {
+        var code = pre.querySelector('code');
+        navigator.clipboard.writeText(code.textContent).then(function() {
+          btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.5 3.5 6.5-8"/></svg>';
+          btn.classList.add('copied');
+          setTimeout(function() {
+            btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5"/><path d="M10.5 5.5V3a1.5 1.5 0 0 0-1.5-1.5H3A1.5 1.5 0 0 0 1.5 3v6A1.5 1.5 0 0 0 3 10.5h2.5"/></svg>';
+            btn.classList.remove('copied');
+          }, 2000);
+        });
+      });
+      pre.appendChild(btn);
+    });
+  </script>
 
   <footer>
     <div class="container">
