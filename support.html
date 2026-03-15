@@ -58,10 +58,10 @@
 
       <h3>5. Launch</h3>
       <pre><code>cd your-project
-greenlight connect --project myproject</code></pre>
+greenlight connect</code></pre>
       <p>greenlight-cli launches your agent in yolo mode so it never blocks on a terminal prompt. Greenlight's libhook permission engine intercepts all reads, writes, network IO, and shell commands &mdash; forwarding them to your phone for approval. The first time, you'll see a session enrollment prompt on your phone &mdash; tap <strong>Allow</strong>.</p>
       <p>To resume a previous session:</p>
-      <pre><code>greenlight connect --project myproject --resume SESSION_ID</code></pre>
+      <pre><code>greenlight connect --resume SESSION_ID</code></pre>
 
       <h3>6. Test It</h3>
       <p>Ask your agent to do something that requires permission, like writing a file. You should see a request appear in the app.</p>
@@ -85,7 +85,7 @@ greenlight connect --project myproject</code></pre>
           <tr>
             <td><code>--project NAME</code></td>
             <td>Project name shown in the app. Rules are scoped per-project.</td>
-            <td>Required</td>
+            <td>Current directory name</td>
           </tr>
           <tr>
             <td><code>--resume SESSION_ID</code></td>
