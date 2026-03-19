@@ -130,6 +130,13 @@ nav .nav-links a:hover {
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
 }
 
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
 .cta-button {
   display: inline-block;
   background: var(--green);
