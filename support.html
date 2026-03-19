@@ -63,6 +63,11 @@ greenlight connect</code></pre>
       <p>To resume a previous session:</p>
       <pre><code>greenlight connect --resume SESSION_ID</code></pre>
 
+      <h3>Optional: Set Up a Shell Alias</h3>
+      <p>Save some keystrokes by aliasing <code>gc</code> to <code>greenlight connect</code>:</p>
+      <pre><code>echo 'alias gc="greenlight connect"' >> ~/.zshrc</code></pre>
+      <p>Using Bash? Replace <code>~/.zshrc</code> with <code>~/.bashrc</code>. Restart your terminal or run <code>source ~/.zshrc</code>, then just type <code>gc</code> to launch.</p>
+
       <h3>6. Test It</h3>
       <p>Ask your agent to do something that requires permission, like writing a file. You should see a request appear in the app.</p>
 
