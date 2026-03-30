@@ -71,16 +71,16 @@
 
       <h2>Step 4: Launch</h2>
       <pre><code>cd your-project
-greenlight connect</code></pre>
+greenlight</code></pre>
       <p>That's it. greenlight-cli handles everything automatically:</p>
       <ul>
         <li>Launches your agent in yolo mode so it never blocks on a terminal prompt</li>
         <li>Greenlight's libhook permission engine intercepts all reads, writes, network IO, and shell commands</li>
-        <li>Enrolls the session with your phone (tap <strong>Allow</strong> on the first prompt)</li>
+        <li>Enrolls with your phone on first launch (tap <strong>Allow</strong> once &mdash; subsequent sessions connect automatically)</li>
         <li>Streams activity to your phone in real time</li>
       </ul>
       <p>To resume a previous session:</p>
-      <pre><code>greenlight connect --resume SESSION_ID</code></pre>
+      <pre><code>greenlight --resume SESSION_ID</code></pre>
 
       <h2>Step 5: Test It</h2>
       <p>Ask your agent to do something that requires permission, like writing a file:</p>
@@ -121,10 +121,6 @@ greenlight connect</code></pre>
 
       <h2>Tips</h2>
       <ul>
-        <li>Tired of typing <code>greenlight connect</code> every time? Set up a shell alias:
-          <pre><code>echo 'alias gc="greenlight connect"' >> ~/.zshrc</code></pre>
-          <p>Using Bash instead of Zsh? Replace <code>~/.zshrc</code> with <code>~/.bashrc</code>. Then restart your terminal or run <code>source ~/.zshrc</code>, and you can just type <code>gc</code> to launch.</p>
-        </li>
         <li>The first few sessions generate the most requests. Once you've built up rules for your common patterns, interruptions drop off quickly.</li>
         <li>Check the <strong>Grants</strong> tab to see your rules grouped by project. Swipe left to delete any rule.</li>
         <li>If you're in a Focus mode on iOS, make sure Time Sensitive notifications are allowed for Greenlight &mdash; permission requests use this priority.</li>
@@ -167,7 +163,7 @@ greenlight connect</code></pre>
         <a href="support.html">Support</a>
         <a href="mailto:support@aigreenlight.app">Contact</a>
       </div>
-      <p class="copyright">&copy; 2025-2026 David Farrell. All rights reserved.</p>
+      <p class="copyright">&copy; 2025-2026 Verge Labs LLC. All rights reserved.</p>
     </div>
   </footer>
 </body>
