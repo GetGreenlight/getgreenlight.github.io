@@ -164,6 +164,15 @@ greenlight</code></pre>
         <li>If the app is not connected and push notifications fail, the request will time out and be denied.</li>
       </ul>
 
+      <h3>"daemon started but socket not ready"</h3>
+      <p>Usually caused by a stale daemon owned by <code>root</code> holding the socket. This can happen if <code>sudo greenlight update</code> failed partway through, leaving a root-owned daemon running. Check with:</p>
+      <pre><code>ls -l /tmp/greenlight-daemon.sock ~/.greenlight/daemon.pid
+ps -o user,pid,command -p $(cat ~/.greenlight/daemon.pid)</code></pre>
+      <p>If the socket or pid file is owned by <code>root</code>, kill the stale daemon and remove the leftover files, then restart:</p>
+      <pre><code>sudo kill $(cat ~/.greenlight/daemon.pid)
+sudo rm /tmp/greenlight-daemon.sock ~/.greenlight/daemon.pid
+greenlight</code></pre>
+
       <h2>Contact</h2>
       <p>For bug reports, feature requests, or any questions, email <a href="mailto:support@aigreenlight.app">support@aigreenlight.app</a>.</p>
     </div>
