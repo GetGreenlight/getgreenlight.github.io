@@ -129,6 +129,41 @@ greenlight</code></pre>
       <h3>Notifications</h3>
       <p>Greenlight uses Time Sensitive notifications that can break through Focus modes. Make sure notifications are enabled in <strong>Settings &rarr; Greenlight &rarr; Notifications</strong> and that Time Sensitive notifications are allowed in your Focus mode settings.</p>
 
+      <h2 id="secrets">Secrets</h2>
+      <p>Greenlight lets your agents use API keys, tokens, and OAuth credentials without ever seeing the values. Secrets are encrypted on your phone using a public key whose private half never leaves your computer &mdash; the relay server stores only ciphertext.</p>
+
+      <h3>1. Initialize a key pair</h3>
+      <p>On the machine where your agents run:</p>
+      <pre><code>greenlight secrets init</code></pre>
+      <p>This generates a public/private key pair under <code>~/.greenlight/</code>. The public key is uploaded to the relay; the private key stays local.</p>
+
+      <h3>2. Add secrets from the app</h3>
+      <p>Open the <strong>Secrets</strong> tab in the Greenlight app. You can either:</p>
+      <ul>
+        <li><strong>Add a custom secret</strong> &mdash; paste any value (API key, token, password) and give it a name.</li>
+        <li><strong>OAuth with a provider</strong> &mdash; connect Google, GitHub, Linear, Slack, or Notion in one tap. Greenlight handles the OAuth flow and stores the resulting access token.</li>
+        <li><strong>Custom OAuth</strong> &mdash; connect any other provider by filling in the OAuth form (authorization URL, token URL, client ID/secret, scopes). Useful for self-hosted services or providers not in the built-in list.</li>
+      </ul>
+      <p>Secrets are encrypted on your phone with your machine's public key before being sent to the relay. Only your computer can decrypt them.</p>
+
+      <h3>3. Use secrets from your agent</h3>
+      <p>Agents see what's available with:</p>
+      <pre><code>greenlight secrets list</code></pre>
+      <p>To run a command with a secret injected as an environment variable:</p>
+      <pre><code>greenlight run -e GITHUB_TOKEN -- gh pr list</code></pre>
+      <p>Pass <code>-e</code> multiple times to inject several secrets. <code>greenlight run</code> is the only path to a secret value &mdash; the agent never reads it directly.</p>
+      <p>Run <code>greenlight run --help</code> for more details and example usage.</p>
+
+      <h3>How leaks are prevented</h3>
+      <ul>
+        <li><strong>Output scrubbing</strong> &mdash; stdout and stderr from <code>greenlight run</code> are scanned and any occurrence of a secret value is replaced with <code>***</code> before the agent sees it. Running <code>greenlight run -e foo -- printenv foo</code> prints <code>***</code>.</li>
+        <li><strong>Permission-gated</strong> &mdash; every <code>greenlight run</code> invocation triggers a permission request on your phone, just like any other command. You can <strong>Always Allow</strong> safe read-only patterns (e.g. <code>greenlight run -e GITHUB_TOKEN -- gh pr list</code>) and keep destructive ones one-tap.</li>
+        <li><strong>No reuse</strong> &mdash; the secret only exists in the environment of the child process. The agent can't capture it for later use without going back through <code>greenlight run</code> &mdash; which prompts you again.</li>
+      </ul>
+
+      <h3>Managing secrets</h3>
+      <p>The app's <strong>Secrets</strong> tab lists everything you've added. Swipe to delete &mdash; the next <code>greenlight secrets list</code> won't show the secret. Expired OAuth access tokens are refreshed automatically on use when the provider issued a refresh token, so you don't need to reconnect.</p>
+
       <h2 id="troubleshooting">Troubleshooting</h2>
 
       <h3>Not receiving requests</h3>

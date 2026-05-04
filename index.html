@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Greenlight - Mission Control for AI Coding Agents</title>
-  <meta name="description" content="Mission control for AI coding agents. Smart rules, live activity streaming, push notifications, and multi-agent management for Claude Code, Copilot CLI, Cursor CLI, Codex CLI, and Pi.">
+  <meta name="description" content="Mission control for AI coding agents. Smart rules, encrypted secrets, live activity streaming, push notifications, and multi-agent management for Claude Code, Copilot CLI, Cursor CLI, Codex CLI, and Pi.">
   <link rel="icon" type="image/png" href="greenlight-logo-1024.png">
   <link rel="stylesheet" href="style.css">
   <!-- Google tag (gtag.js) -->
@@ -42,6 +42,11 @@
         <source src="screen-recording.mp4" type="video/mp4">
       </video>
       <p class="video-caption"><strong>New!</strong> Speak to your agent with fast and accurate voice transcription</p>
+      <a href="support.html#secrets" class="hero-callout">
+        <span class="hero-callout-badge">NEW</span>
+        <span class="hero-callout-text"><strong>Encrypted secrets</strong> &mdash; give agents API keys and OAuth tokens without ever exposing the values</span>
+        <span class="hero-callout-arrow">&rarr;</span>
+      </a>
       <div class="cta-buttons">
         <a href="https://apps.apple.com/us/app/greenlight-ai/id6758998897" class="cta-button">Download on the App Store</a>
         <a href="https://play.google.com/store/apps/details?id=com.vergelabs.greenlight" class="cta-button">Get it on Google Play</a>
@@ -94,6 +99,10 @@
         <div class="feature-card">
           <h3>Smart Rules</h3>
           <p>Set up rules once, your agents auto-approve trusted actions forever. Subcommand-aware patterns keep things safe &mdash; destructive commands use exact matching.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Encrypted Secrets <em>New!</em></h3>
+          <p>Give your agent API keys without ever exposing them. Add secrets or OAuth with Google, GitHub, Linear, Slack, and Notion from the app &mdash; they're encrypted on-device with a key only your machine can decrypt. Agents inject secrets via <code>greenlight run</code>, output is scrubbed, and every use triggers a permission request.</p>
         </div>
         <div class="feature-card">
           <h3>Multi-Agent, Multi-Project</h3>

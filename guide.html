@@ -88,6 +88,17 @@ greenlight</code></pre>
       <pre><code>echo "test" > /tmp/greenlight-test.txt</code></pre>
       <p>You should see a request appear on your phone. Tap <strong>Allow</strong> and the agent will continue. If you tap <strong>Always Allow</strong>, a rule is created and the agent won't ask again for that class of command in this project.</p>
 
+      <h2>Step 6: (Optional) Set Up Secrets</h2>
+      <p>If you want your agent to use API keys, tokens, or OAuth credentials without ever seeing the values, set up secrets.</p>
+      <p>On the machine where your agents run:</p>
+      <pre><code>greenlight secrets init</code></pre>
+      <p>This generates a public/private key pair under <code>~/.greenlight/</code>. The public key is uploaded to the relay; the private key stays local.</p>
+      <p>Then open the <strong>Secrets</strong> tab in the app and add a custom secret or OAuth with Google, GitHub, Linear, Slack, or Notion. Secrets are encrypted on your phone with your machine's public key before being sent &mdash; only your computer can decrypt them.</p>
+      <p>From your agent:</p>
+      <pre><code>greenlight secrets list
+greenlight run -e GITHUB_TOKEN -- gh pr list</code></pre>
+      <p><code>greenlight run</code> is the only path to a secret value &mdash; output is scrubbed (occurrences of the value are replaced with <code>***</code>) and every invocation triggers a permission request, so you stay in control. See the <a href="support.html#secrets">support page</a> for full details.</p>
+
       <h2>How the Rules Work</h2>
       <p>Rules are the core of the system. Tapping "Always Allow" doesn't just approve the request &mdash; it generates a pattern that auto-approves future matching commands without interrupting you.</p>
 
