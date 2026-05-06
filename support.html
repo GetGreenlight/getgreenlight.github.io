@@ -180,12 +180,6 @@ greenlight</code></pre>
         <li>The session should appear immediately when you run <code>greenlight</code>. If it doesn't, check the greenlight log file for errors.</li>
       </ul>
 
-      <h3>Talk to Your Agent not working</h3>
-      <ul>
-        <li>You must launch your agent with <code>greenlight connect</code>.</li>
-        <li>Check that the Activity tab shows an input bar at the bottom when viewing the session.</li>
-      </ul>
-
       <h3>Not receiving push notifications</h3>
       <ul>
         <li>Check that notifications are enabled: <strong>Settings &rarr; Greenlight &rarr; Notifications</strong>.</li>
@@ -193,10 +187,11 @@ greenlight</code></pre>
         <li>Push notifications are sent when the app is backgrounded. If the app is in the foreground, requests arrive directly via WebSocket.</li>
       </ul>
 
-      <h3>Requests timing out</h3>
+      <h3>Connection drops when computer is idle</h3>
+      <p>If your agent's connection drops after a period of inactivity, your computer is likely sleeping. Adjust your power settings so it stays awake while greenlight is running:</p>
       <ul>
-        <li>The default timeout is 590 seconds.</li>
-        <li>If the app is not connected and push notifications fail, the request will time out and be denied.</li>
+        <li><strong>macOS</strong> &mdash; <strong>System Settings &rarr; Lock Screen</strong> (or <strong>Battery</strong> on laptops), and set <em>"Turn display off on power adapter when inactive"</em> to <strong>Never</strong>, or enable <em>"Prevent automatic sleeping on power adapter when the display is off"</em>. Alternatively, run <code>caffeinate</code> in a terminal to keep the system awake temporarily.</li>
+        <li><strong>Ubuntu</strong> &mdash; <strong>Settings &rarr; Power</strong>, and set <em>"Automatic Suspend"</em> to <strong>Off</strong> and <em>"Screen Blank"</em> to <strong>Never</strong>. On a server or headless system, run <code>systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target</code>.</li>
       </ul>
 
       <h3>"daemon started but socket not ready"</h3>
