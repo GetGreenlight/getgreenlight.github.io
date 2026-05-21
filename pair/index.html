@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pair Device - Greenlight</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .pair-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      text-align: center;
+      padding: 24px;
+    }
+    .pair-code {
+      font-family: 'SF Mono', 'Menlo', 'Monaco', monospace;
+      font-size: 48px;
+      font-weight: 600;
+      letter-spacing: 12px;
+      color: var(--green);
+      margin: 32px 0;
+      padding: 16px 32px;
+      background: var(--dark-card);
+      border: 1px solid var(--dark-border);
+      border-radius: 12px;
+    }
+    .pair-instructions {
+      color: var(--text-muted);
+      font-size: 16px;
+      max-width: 400px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+    .pair-instructions strong {
+      color: var(--text);
+    }
+    .store-links {
+      display: flex;
+      gap: 16px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .store-links a {
+      display: inline-block;
+      padding: 10px 20px;
+      background: var(--dark-card);
+      border: 1px solid var(--dark-border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+    .store-links a:hover {
+      border-color: var(--green);
+      text-decoration: none;
+    }
+    .pair-expired {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    .pair-spinner {
+      margin: 32px 0;
+      color: var(--green);
+    }
+  </style>
+</head>
+<body>
+  <div class="pair-container" id="content">
+    <img src="/greenlight-logo-1024.png" alt="Greenlight" width="80" height="80" style="border-radius: 16px; margin-bottom: 16px;">
+    <h2 style="color: var(--text-heading); margin-bottom: 8px;">Pair with Greenlight</h2>
+    <div class="pair-spinner" id="spinner">Opening app...</div>
+    <div id="fallback" style="display: none;">
+      <p class="pair-instructions">
+        Enter this code in the Greenlight app.<br>
+        Open the app and tap <strong>Pair with Computer</strong> on the About tab.
+      </p>
+      <div class="pair-code" id="code"></div>
+      <p class="pair-expired" id="expired" style="display: none;">This code has expired. Run <code>greenlight connect</code> again.</p>
+      <div class="store-links">
+        <a href="https://apps.apple.com/us/app/greenlight-ai/id6758998897">App Store</a>
+        <a href="https://play.google.com/store/apps/details?id=com.vergelabs.greenlight">Google Play</a>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function() {
+      var params = new URLSearchParams(window.location.search);
+      var code = params.get('code');
+      var token = params.get('t');
+
+      if (!code || code.length !== 6) {
+        document.getElementById('spinner').textContent = 'Invalid pairing link.';
+        return;
+      }
+
+      // Show the code as fallback after a short delay
+      // (gives Universal Link / App Link time to intercept)
+      document.getElementById('code').textContent = code.split('').join(' ');
+
+      setTimeout(function() {
+        document.getElementById('spinner').style.display = 'none';
+        document.getElementById('fallback').style.display = 'block';
+      }, 1500);
+    })();
+  </script>
+</body>
+</html>

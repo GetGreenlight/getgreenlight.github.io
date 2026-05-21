@@ -1,0 +1,15 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": ["PRR36DLJ99.com.dnmfarrell.greenlight"],
+        "paths": ["/pair*"]
+      },
+      {
+        "appIDs": ["PRR36DLJ99.com.dnmfarrell.greenlight.dev"],
+        "paths": ["/pair*"]
+      }
+    ]
+  }
+}

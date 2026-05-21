@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.vergelabs.greenlight",
+      "sha256_cert_fingerprints": [
+        "E5:48:CB:0E:63:32:54:E4:2F:CA:47:16:88:AE:E6:AD:76:9C:A3:2C:22:D6:BE:05:36:15:A1:EC:E8:C7:41:F2",
+        "DC:10:DD:15:C5:94:41:35:35:20:E1:37:FA:21:72:0F:83:7C:AC:CE:FF:AC:60:59:48:61:4F:A5:C9:A6:5B:94"
+      ]
+    }
+  }
+]
