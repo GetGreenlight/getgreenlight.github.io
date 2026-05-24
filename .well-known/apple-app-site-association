@@ -3,11 +3,10 @@
     "apps": [],
     "details": [
       {
-        "appIDs": ["PRR36DLJ99.com.dnmfarrell.greenlight"],
-        "paths": ["/pair*"]
-      },
-      {
-        "appIDs": ["PRR36DLJ99.com.dnmfarrell.greenlight.dev"],
+        "appIDs": [
+          "UYD82MLK6W.com.dnmfarrell.greenlight",
+          "UYD82MLK6W.com.vergelabs.greenlight.dev"
+        ],
         "paths": ["/pair*"]
       }
     ]
