@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Greenlight - Mission Control for AI Coding Agents</title>
-  <meta name="description" content="Mission control for AI coding agents. Smart rules, encrypted secrets, live activity streaming, push notifications, and multi-agent management for Claude Code, Copilot CLI, Cursor CLI, Codex CLI, and Pi.">
+  <title>Greenlight - Keep Claude Coding</title>
+  <meta name="description" content="A mobile app that keeps Claude coding. Your agents keep stopping — Greenlight keeps them working. Smart rules, watch approvals, and live session visibility for Claude Code, Codex CLI, and more.">
   <link rel="icon" type="image/png" href="greenlight-logo-1024.png">
   <link rel="stylesheet" href="style.css">
   <!-- Google tag (gtag.js) -->
@@ -24,7 +24,7 @@
         Greenlight
       </a>
       <div class="nav-links">
-        <a href="#how-it-works">How It Works</a>
+        <a href="#how-it-works">How It Helps</a>
         <a href="#features">Features</a>
         <a href="guide.html">Setup Guide</a>
         <a href="support.html">Support</a>
@@ -35,60 +35,161 @@
   <header class="hero">
     <div class="container">
       <img src="greenlight-logo-1024.png" alt="Greenlight" class="hero-logo">
-      <h1>Mission control for AI agents</h1>
-      <p class="tagline">Your agents never block again. Smart rules auto-approve trusted actions. When something needs your attention, you handle it from your phone — and the agent keeps working.</p>
-      <p class="supported-agents">Works with any CLI agent: Claude Code, GitHub Copilot, Cursor, Codex, Gemini, and Pi.</p>
-      <video class="hero-video" autoplay loop muted playsinline>
-        <source src="screen-recording.mp4" type="video/mp4">
-      </video>
-      <p class="video-caption"><strong>New!</strong> Speak to your agent with fast and accurate voice transcription</p>
-      <a href="support.html#secrets" class="hero-callout">
-        <span class="hero-callout-badge">NEW</span>
-        <span class="hero-callout-text"><strong>Encrypted secrets</strong> &mdash; give agents API keys and OAuth tokens without ever exposing the values</span>
-        <span class="hero-callout-arrow">&rarr;</span>
-      </a>
+      <h1>A mobile app that keeps Claude coding.</h1>
+      <p class="tagline">Your agents keep stopping. Greenlight keeps them working &mdash; so you actually get what you're paying for.</p>
+      <p class="supported-agents">Works with Claude Code, Codex CLI and more.</p>
       <div class="cta-buttons">
         <a href="https://apps.apple.com/us/app/greenlight-ai/id6758998897" class="cta-button">Download on the App Store</a>
         <a href="https://play.google.com/store/apps/details?id=com.vergelabs.greenlight" class="cta-button">Get it on Google Play</a>
       </div>
+      <p class="cta-note">Install now &mdash; free.</p>
     </div>
   </header>
 
-  <section id="tutorial">
+  <section id="problem">
     <div class="container">
-      <h2>Setup Tutorial</h2>
-      <div class="video-wrapper">
-        <iframe src="https://www.youtube.com/embed/ez4su-h8ECY" title="Greenlight AI Setup Tutorial" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
+      <h2>Coding agents are wonderful and frustrating</h2>
+      <ul class="icon-list problem-list">
+        <li>You think your agents are working on a new feature but they're actually just sitting there waiting for you.</li>
+        <li>You have a feeling you've granted your agents more permissions than they need.</li>
+        <li>You find it tiresome to continually check in on agents' progress.</li>
+        <li>You don't want to be chained to your desk or glued to your phone.</li>
+        <li>You want to be able to direct agents using more than just chat messages.</li>
+      </ul>
     </div>
   </section>
 
   <section id="how-it-works">
     <div class="container">
-      <h2>How It Works</h2>
+      <h2>How Greenlight helps</h2>
+      <ul class="icon-list help-list">
+        <li>Notifies you on your phone or watch whenever an agent needs your input.</li>
+        <li>Smart rules grant an agent just the permissions it needs, and can auto-expire them.</li>
+        <li>The sessions view shows you your active agents, and whether they're working, waiting or idling.</li>
+        <li>Sends permission requests to your watch so you can approve or deny with a tap.</li>
+        <li>Supports a ticket-driven workflow where you direct agents to work tickets rather than spoon feed them instructions.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="screenshots">
+    <div class="container">
+      <h2>See it in action</h2>
+      <div class="screenshots">
+        <figure class="screenshot">
+          <img src="img/screenshot-sessions.png" alt="Greenlight sessions list showing agents marked working and idling">
+          <figcaption>See every agent at a glance &mdash; working, waiting or idling.</figcaption>
+        </figure>
+        <figure class="screenshot">
+          <img src="img/screenshot-permission.png" alt="Greenlight permission request with Allow, Deny, and Always Allow buttons">
+          <figcaption>Approve or deny permission requests with a tap.</figcaption>
+        </figure>
+        <figure class="screenshot">
+          <img src="img/screenshot-transcript.png" alt="Greenlight live session transcript with a reply box">
+          <figcaption>Follow the live session and steer it with a reply.</figcaption>
+        </figure>
+        <figure class="screenshot">
+          <img src="img/screenshot-question.png" alt="Greenlight prompting you to choose an answer to an agent's question">
+          <figcaption>Answer agents' questions &mdash; direct them with more than chat.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="the-plan">
+    <div class="container">
+      <h2>The plan</h2>
       <div class="steps">
         <div class="step">
           <div class="step-number">1</div>
           <div class="step-content">
-            <h3>Launch your agents</h3>
-            <p><a href="guide.html">Install greenlight-cli</a> and run <code>greenlight</code> in your project directory. Your agent launches in yolo mode so it never blocks on a terminal prompt. Greenlight's permission engine intercepts all reads, writes, network IO, and shell commands &mdash; forwarding them to your phone for approval.</p>
+            <h3>Get the app</h3>
+            <p>Download Greenlight from the <a href="https://apps.apple.com/us/app/greenlight-ai/id6758998897">App Store</a> or <a href="https://play.google.com/store/apps/details?id=com.vergelabs.greenlight">Google Play</a>.</p>
           </div>
         </div>
         <div class="step">
           <div class="step-number">2</div>
           <div class="step-content">
-            <h3>Build rules, stop blocking</h3>
-            <p>Tap "Always Allow" and Greenlight generates smart rules that auto-approve matching actions. After a few sessions, most requests never reach you. Your agents just keep working.</p>
+            <h3>Set up the CLI</h3>
+            <p>Install the free Greenlight terminal app on your computer:</p>
+            <pre class="step-code"><code>curl -sSL https://aigreenlight.app/install.sh | bash</code></pre>
           </div>
         </div>
         <div class="step">
           <div class="step-number">3</div>
           <div class="step-content">
-            <h3>Manage everything from your phone</h3>
-            <p>Run multiple agents across projects. Stream activity, handle approvals, send input, and pull the plug &mdash; all from one place.</p>
+            <h3>Launch</h3>
+            <p>Run <code>greenlight connect</code> to pair your computer with the app and start your agent.</p>
           </div>
         </div>
       </div>
+      <p class="plan-link">Need a hand? Read the <a href="guide.html">setup guide</a>.</p>
+    </div>
+  </section>
+
+  <section id="story">
+    <div class="container">
+      <h2>The story</h2>
+      <div class="story">
+        <p>As the creators of Greenlight, we understand the challenge of creating successful software whilst balancing commitments. Coding agents are a great tool, but they demand too much of your time. Time that could be spent designing a new feature, talking to users or generating leads.</p>
+        <p>We built Greenlight to make it easy to keep your agents working. It runs on your computer, not in the cloud somewhere. All agent chats are privately transmitted to your phone, and never stored. It works with Claude, Codex and other top coding agents so you're not locked in to any one supplier. Give it a try, so instead of losing time herding agents, you're directing your vision of the future.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="architecture">
+    <div class="container">
+      <h2>How it all connects</h2>
+      <p class="section-intro">Your agents run on your computer. Greenlight relays their requests privately to your phone &mdash; so you stay in control from anywhere.</p>
+      <svg class="arch-diagram" viewBox="0 0 460 610" role="img" aria-labelledby="arch-title arch-desc" xmlns="http://www.w3.org/2000/svg">
+        <title id="arch-title">Greenlight architecture</title>
+        <desc id="arch-desc">Your computer runs the Greenlight CLI, which hosts your Claude Code and Codex CLI sessions. A private relay connects to the Greenlight server, which runs the permissions engine, and another private relay connects to your phone.</desc>
+        <defs>
+          <marker id="arch-arrowhead" markerWidth="9" markerHeight="9" refX="4.5" refY="4.5" orient="auto">
+            <path d="M0,0 L9,4.5 L0,9 Z" class="arch-arrow" />
+          </marker>
+          <clipPath id="arch-logo-clip">
+            <rect x="218" y="466" width="24" height="24" rx="6" />
+          </clipPath>
+        </defs>
+
+        <!-- Your computer -->
+        <rect x="40" y="20" width="380" height="190" rx="14" class="arch-outer" />
+        <text x="58" y="46" class="arch-title">Your computer</text>
+        <rect x="66" y="60" width="328" height="132" rx="10" class="arch-gl" />
+        <text x="84" y="84" class="arch-label">Greenlight CLI</text>
+        <rect x="86" y="100" width="140" height="74" rx="8" class="arch-inner" />
+        <text x="156" y="137" class="arch-text" text-anchor="middle" dominant-baseline="middle">Claude Code</text>
+        <rect x="234" y="100" width="140" height="74" rx="8" class="arch-inner" />
+        <text x="304" y="137" class="arch-text" text-anchor="middle" dominant-baseline="middle">Codex CLI</text>
+
+        <!-- relay: computer -> server -->
+        <line x1="230" y1="216" x2="230" y2="254" class="arch-line" marker-start="url(#arch-arrowhead)" marker-end="url(#arch-arrowhead)" />
+        <text x="246" y="239" class="arch-relay">private relay</text>
+
+        <!-- Greenlight server -->
+        <rect x="110" y="260" width="240" height="110" rx="14" class="arch-gl" />
+        <text x="128" y="286" class="arch-label">Greenlight server</text>
+        <rect x="132" y="300" width="196" height="50" rx="8" class="arch-gl-strong" />
+        <text x="230" y="326" class="arch-text" text-anchor="middle" dominant-baseline="middle">Permissions engine</text>
+
+        <!-- relay: server -> phone -->
+        <line x1="230" y1="376" x2="230" y2="414" class="arch-line" marker-start="url(#arch-arrowhead)" marker-end="url(#arch-arrowhead)" />
+        <text x="246" y="399" class="arch-relay">private relay</text>
+
+        <!-- Your phone -->
+        <rect x="170" y="420" width="120" height="170" rx="20" class="arch-outer" />
+        <text x="230" y="444" class="arch-title" text-anchor="middle">Your phone</text>
+        <rect x="184" y="458" width="92" height="104" rx="8" class="arch-gl-strong" />
+        <image href="greenlight-logo-1024.png" x="218" y="466" width="24" height="24" clip-path="url(#arch-logo-clip)" />
+        <text x="230" y="503" class="arch-muted" text-anchor="middle" dominant-baseline="middle">Allow edit?</text>
+        <rect x="194" y="514" width="72" height="16" rx="8" class="arch-btn-allow" />
+        <text x="230" y="522" class="arch-btn-label-dark" text-anchor="middle" dominant-baseline="middle">Allow</text>
+        <rect x="194" y="536" width="72" height="16" rx="8" class="arch-btn-deny" />
+        <text x="230" y="544" class="arch-btn-label-light" text-anchor="middle" dominant-baseline="middle">Deny</text>
+        <line x1="212" y1="576" x2="248" y2="576" class="arch-home" />
+      </svg>
+      <p class="arch-caption">Agent chats are relayed privately and never stored.</p>
     </div>
   </section>
 
@@ -97,50 +198,37 @@
       <h2>Features</h2>
       <div class="features-grid">
         <div class="feature-card">
-          <h3>Smart Rules</h3>
-          <p>Set up rules once, your agents auto-approve trusted actions forever. Subcommand-aware patterns keep things safe &mdash; destructive commands use exact matching.</p>
+          <h3>Approve, deny, or halt</h3>
+          <p>Stay in control of every agent action with a single tap.</p>
         </div>
         <div class="feature-card">
-          <h3>Encrypted Secrets <em>New!</em></h3>
-          <p>Give your agent API keys without ever exposing them. Add secrets or OAuth with Google, GitHub, Linear, Slack, and Notion from the app &mdash; they're encrypted on-device with a key only your machine can decrypt. Agents inject secrets via <code>greenlight run</code>, output is scrubbed, and every use triggers a permission request.</p>
+          <h3>Direct Claude</h3>
+          <p>Send instructions to any agent session from your phone.</p>
         </div>
         <div class="feature-card">
-          <h3>Multi-Agent, Multi-Project</h3>
-          <p>Manage all your agents from one place. Run agents across projects simultaneously &mdash; each with its own rules and activity stream.</p>
+          <h3>Start or resume agents</h3>
+          <p>Launch or wake a session right from your phone.</p>
         </div>
         <div class="feature-card">
-          <h3>Push Notifications</h3>
-          <p>Get notified when an agent needs you, even when the app is closed. Time Sensitive alerts break through Focus modes. <em>Greenlight Pro.</em></p>
+          <h3>Live activity stream</h3>
+          <p>See exactly what every agent is doing in real time.</p>
         </div>
         <div class="feature-card">
-          <h3>Apple Watch &amp; Wear OS</h3>
-          <p>Actionable notifications right on your wrist, on Apple Watch and Android Wear OS. Allow, deny, and manage agent requests without reaching for your phone. <em>Greenlight Pro.</em></p>
+          <h3>Push notifications</h3>
+          <p>Know when your agents are blocked or idle. <em>Greenlight Pro.</em></p>
         </div>
         <div class="feature-card">
-          <h3>Live Activity Stream</h3>
-          <p>See exactly what every agent is doing, across every project. Every tool call, file edit, and decision streams through in real time.</p>
+          <h3>Apple Watch</h3>
+          <p>Keep your agents working with a tap of your wrist. <em>Greenlight Pro.</em></p>
         </div>
         <div class="feature-card">
-          <h3>Pull the Plug</h3>
-          <p>Remotely terminate any running agent, instantly. One tap from anywhere.</p>
+          <h3>Voice input with WhisperKit</h3>
+          <p>Direct your agents with fast, accurate voice to text. <em>Greenlight Pro &middot; iOS only.</em></p>
         </div>
         <div class="feature-card">
-          <h3>Command Risk Intelligence</h3>
-          <p>Commands are color-coded by risk level using a registry of 170+ CLI tools. See at a glance which parts of a compound command need attention.</p>
+          <h3>Temporary grants</h3>
+          <p>Never worry about over-generous agent permissions. <em>Greenlight Pro.</em></p>
         </div>
-        <div class="feature-card">
-          <h3>Wake Past Sessions</h3>
-          <p>Resume any past agent session straight from your phone &mdash; Greenlight launches the agent on your computer and reconnects. <em>Greenlight Pro.</em></p>
-        </div>
-        <div class="feature-card">
-          <h3>Voice Input</h3>
-          <p>On-device speech-to-text powered by WhisperKit. Talk to your agent hands-free. <em>Greenlight Pro.</em></p>
-        </div>
-        <div class="feature-card">
-          <h3>Temporary Grants</h3>
-          <p>Time-limited auto-approve rules that expire automatically. Grant access for a session without creating permanent rules. <em>Greenlight Pro.</em></p>
-        </div>
-
       </div>
     </div>
   </section>

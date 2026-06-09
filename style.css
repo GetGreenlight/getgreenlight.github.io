@@ -225,6 +225,251 @@ nav .nav-links a:hover {
   text-decoration: none;
 }
 
+.cta-note {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-top: 16px;
+}
+
+/* Icon lists (problem / help) */
+.icon-list {
+  list-style: none;
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.icon-list li {
+  position: relative;
+  padding-left: 34px;
+  margin-bottom: 18px;
+  color: var(--text);
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.icon-list li::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.problem-list li::before {
+  content: "\2715"; /* ✕ */
+  color: #e7553b;
+}
+
+.help-list li::before {
+  content: "\2713"; /* ✓ */
+  color: var(--green);
+}
+
+/* Screenshot showcase */
+.screenshots {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.screenshot {
+  margin: 0;
+  max-width: 240px;
+}
+
+.screenshot img {
+  display: block;
+  width: 100%;
+  border-radius: 24px;
+  border: 1px solid var(--dark-border);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+}
+
+.screenshot figcaption {
+  margin-top: 14px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Plan code + link */
+.step-content code {
+  font-family: "SF Mono", "Menlo", "Monaco", monospace;
+  font-size: 0.85em;
+  background: var(--dark);
+  border: 1px solid var(--dark-border);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--text);
+}
+
+.step-code {
+  margin-top: 10px;
+  background: var(--dark);
+  border: 1px solid var(--dark-border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  overflow-x: auto;
+}
+
+.step-code code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.85rem;
+  color: var(--green);
+}
+
+.plan-link {
+  margin-top: 28px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* Story */
+.story {
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.story p {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.story p:last-child {
+  margin-bottom: 0;
+}
+
+/* Section intro */
+.section-intro {
+  max-width: 560px;
+  margin: -12px auto 36px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* Architecture diagram */
+.arch-diagram {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  margin: 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+}
+
+.arch-outer {
+  fill: var(--dark-surface);
+  stroke: var(--dark-border);
+  stroke-width: 1.5;
+}
+
+.arch-box {
+  fill: var(--dark-card);
+  stroke: var(--dark-border);
+  stroke-width: 1.5;
+}
+
+.arch-inner {
+  fill: var(--dark);
+  stroke: var(--dark-border);
+  stroke-width: 1.5;
+}
+
+/* Greenlight-owned components share one muted green */
+.arch-gl {
+  fill: rgba(57, 231, 95, 0.07);
+  stroke: rgba(57, 231, 95, 0.4);
+  stroke-width: 1.5;
+}
+
+.arch-gl-strong {
+  fill: rgba(57, 231, 95, 0.14);
+  stroke: rgba(57, 231, 95, 0.55);
+  stroke-width: 1.5;
+}
+
+.arch-btn-allow {
+  fill: var(--green);
+}
+
+.arch-btn-deny {
+  fill: #e7553b;
+}
+
+.arch-btn-label-dark {
+  fill: var(--dark);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.arch-btn-label-light {
+  fill: #fff;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.arch-title {
+  fill: var(--text-heading);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.arch-label {
+  fill: var(--text-heading);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.arch-text {
+  fill: var(--text);
+  font-size: 13px;
+}
+
+.arch-muted {
+  fill: var(--text-muted);
+  font-size: 11px;
+}
+
+.arch-relay {
+  fill: var(--green);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.arch-line {
+  stroke: var(--green);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 4;
+}
+
+.arch-arrow {
+  fill: var(--green);
+}
+
+.arch-home {
+  stroke: var(--text-muted);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.arch-caption {
+  margin-top: 24px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
 /* Video */
 .video-wrapper {
   max-width: 640px;
