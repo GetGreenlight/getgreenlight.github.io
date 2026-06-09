@@ -35,7 +35,7 @@
     <div class="container">
       <h1>Greenlight Setup Guide</h1>
 
-      <p>Greenlight is mission control for your AI coding agents. It launches your agent in yolo mode so it never blocks on a terminal prompt. Greenlight's permission engine intercepts all reads, writes, network IO, and shell commands &mdash; routing them to your phone for approval. Smart rules auto-approve trusted actions so your agents keep working. When something needs your attention, you handle it from anywhere.</p>
+      <p>Greenlight keeps your coding agents working. It launches your agent in yolo mode so it never blocks on a terminal prompt. Greenlight's permission engine intercepts all reads, writes, network IO, and shell commands &mdash; routing them to your phone for approval. Smart rules auto-approve trusted actions so your agents keep working. When something needs your attention, you handle it from anywhere.</p>
 
       <h2>Supported Agents</h2>
       <ul>
@@ -54,16 +54,19 @@
         <li>macOS, Linux, or WSL2</li>
       </ul>
 
-      <h2>Step 1: Get Your Device ID</h2>
-      <p>Open Greenlight on your phone and go to the <strong>About</strong> tab. Tap your Device ID to copy it to the clipboard.</p>
-
-      <h2>Step 2: Install greenlight-cli</h2>
+      <h2>Step 1: Install greenlight-cli</h2>
       <pre><code>curl -sSL https://aigreenlight.app/install.sh | bash</code></pre>
       <p>This downloads the latest binary for your system and installs it to <code>/usr/local/bin</code>.</p>
 
-      <p>Register your device ID (you only need to do this once):</p>
-      <pre><code>greenlight register YOUR_DEVICE_ID</code></pre>
-      <p>You can also pass <code>--device-id</code> as a flag or set the <code>GREENLIGHT_DEVICE_ID</code> environment variable.</p>
+      <h2>Step 2: Pair Your Phone</h2>
+      <p>Connect the CLI to the Greenlight app:</p>
+      <pre><code>greenlight connect</code></pre>
+      <p>A QR code appears in your terminal. Pair using either method:</p>
+      <ul>
+        <li><strong>Scan the QR code</strong> with your phone's camera, then tap the notification to open Greenlight.</li>
+        <li><strong>Enter the code manually:</strong> open Greenlight, tap the <strong>Settings</strong> icon (the cog wheel in the upper-right corner), tap <strong>Pair</strong>, and type in the code shown in your terminal.</li>
+      </ul>
+      <p>You only need to pair once &mdash; your computer and phone reconnect automatically for future sessions.</p>
 
       <h2>Step 3: Set Your Default Agent</h2>
       <p>Tell Greenlight which agent you want to use:</p>
@@ -77,7 +80,7 @@ greenlight</code></pre>
       <ul>
         <li>Launches your agent in yolo mode so it never blocks on a terminal prompt</li>
         <li>Greenlight's libhook permission engine intercepts all reads, writes, network IO, and shell commands</li>
-        <li>Enrolls with your phone on first launch (tap <strong>Allow</strong> once &mdash; subsequent sessions connect automatically)</li>
+        <li>Connects to your paired phone automatically &mdash; no extra steps after the first pairing</li>
         <li>Streams activity to your phone in real time</li>
       </ul>
       <p>To resume a previous session:</p>
