@@ -526,6 +526,10 @@ section h2 {
   justify-content: center;
 }
 
+.step-content {
+  min-width: 0;
+}
+
 .step-content h3 {
   font-size: 1.1rem;
   color: var(--text-heading);
