@@ -541,7 +541,58 @@ section h2 {
   font-size: 0.95rem;
 }
 
+/* Flagship feature (Autopilot) */
+.flagship-panel {
+  max-width: 620px;
+  margin: 0 auto;
+  background: rgba(57, 231, 95, 0.06);
+  border: 1px solid rgba(57, 231, 95, 0.35);
+  border-radius: 16px;
+  padding: 32px;
+}
+
+.flagship-panel h3 {
+  font-size: 1.5rem;
+  color: var(--text-heading);
+  margin: 14px 0 16px;
+  letter-spacing: -0.01em;
+}
+
+.flagship-panel p {
+  color: var(--text-muted);
+  font-size: 1.02rem;
+  line-height: 1.65;
+  margin-bottom: 16px;
+}
+
+.flagship-panel .flagship-kicker {
+  color: var(--text);
+  font-style: italic;
+  margin-bottom: 0;
+}
+
+.pro-badge {
+  display: inline-block;
+  background: var(--green);
+  color: var(--dark);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
 /* Features */
+.feature-card-pro {
+  border-color: rgba(57, 231, 95, 0.45);
+  background: rgba(57, 231, 95, 0.06);
+}
+
+.feature-card-pro .pro-badge {
+  margin-bottom: 12px;
+}
+
 .features-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
