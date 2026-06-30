@@ -827,5 +827,10 @@ footer .copyright {
 
   nav .nav-links {
     gap: 16px;
+    flex-wrap: wrap; /* safety: wrap instead of overflow if still tight */
+  }
+
+  nav .nav-links a[href^="#"] {
+    display: none; /* drop How It Helps / Autopilot / Features on mobile */
   }
 }
